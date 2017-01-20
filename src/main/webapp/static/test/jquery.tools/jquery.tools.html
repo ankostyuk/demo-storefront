@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru-RU"> 
+<head> 
+    <title>storefront-jquery.tools-test</title>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" /> 
+    <link rel="stylesheet" type="text/css" href="main.css" />
+    <script type="text/javascript" src="../../js/jquery-1.4.2.js"></script>
+    <script type="text/javascript" src="../../js/jquery.tools-1.2.3.min.js"></script>
+    <!--<script type="text/javascript" src="http://cdn.jquerytools.org/1.2.3/full/jquery.tools.min.js"></script>-->
+    
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $("#box-id").tooltip({
+            position: "center left",
+            opacity: 0.9,
+            delay: 3000,
+            onBeforeShow: function(){
+                return this.getTip().data("show") ? true : false;
+            },
+            onBeforeHide: function(){
+                this.getTip().data("show", false);
+                return true;
+            }
+        });
+
+        $(".do-tooltip").click(function(){
+            var tooltip = $("#box-id").data("tooltip");
+            tooltip.getTip().data("show", true);
+            tooltip.show();
+        });
+        $("#view-id").click(function(){
+            //var tooltip = $("#box-id").data("tooltip");
+            //tooltip.hide();
+        });
+    });
+    </script>
+
+</head> 
+<body>
+    <p>AAA</p>
+    <p>AAA</p>
+    <p>AAA</p>
+    <p>AAA</p>
+    <p>
+        <a class="do-tooltip" style="cursor: pointer">show</a>
+    </p>
+    <div id="box-id" class="box do-tooltip">
+        <!--<img alt="" src="http://flowplayer.org/tools/img/tooltip/black_arrow.png" title="TEST"/>-->
+        <p>BBB</p>
+        <form action="">
+            <div>
+                <input type="text" />
+            </div>
+        </form>
+    </div>
+    <div class="tooltip">
+        <p>TEST</p>
+        <p>
+            <a id="view-id" style="cursor: pointer">view</a>
+        </p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Model">
+    <resultMap id="ModelResultMap" class="Model">
+        <result column="mod_id" property="id" />
+        <result column="mod_category_id" property="categoryId" />
+        <result column="mod_param_set_id" property="paramSetId" />
+        <result column="mod_brand_id" property="brandId" />
+        <result column="mod_name" property="name" />
+        <result column="mod_description" property="description" />
+        <result column="mod_vendor_code" property="vendorCode" />
+        <result column="mod_keywords" property="keywords" />
+        <result column="mod_site" property="site" />
+        <result column="mod_image" property="image" />
+        <result column="mod_param_description" property="paramDescription" />
+    </resultMap>
+    
+    <sql id="all-fields">
+        mod_id,
+        mod_category_id,
+        mod_param_set_id,
+        mod_brand_id,
+        mod_name,
+        mod_description,
+        mod_vendor_code,
+        mod_keywords,
+        mod_site,
+        mod_image,
+        mod_param_description
+    </sql>
+
+    <select id="countByCategoryId" parameterClass="int" resultClass="int">
+        SELECT COUNT(*)
+        FROM model
+        WHERE mod_category_id = #categoryId#
+    </select>
+
+    <select id="countMapByCategoryId" parameterClass="java.util.List" resultClass="java.util.HashMap">
+        SELECT
+        mod_category_id as id,
+        COUNT(mod_id)::integer as count
+        FROM model
+        WHERE mod_category_id IN
+        <iterate open="(" close=")" conjunction=",">
+            #[]#
+        </iterate>
+        GROUP BY mod_category_id
+    </select>
+
+    <select id="selectByCategoryId" parameterClass="java.util.Map" resultMap="ModelResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM model
+        WHERE mod_category_id = #categoryId#
+        ORDER BY mod_name ASC
+        OFFSET #offset# LIMIT #limit#
+    </select>
+
+    <select id="selectMapByIdSet" parameterClass="java.util.List" resultMap="ModelResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM model
+        WHERE mod_id IN
+        <iterate open="(" close=")" conjunction=",">
+            #[]#
+        </iterate>
+    </select>
+
+    <select id="selectById" parameterClass="int" resultMap="ModelResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM model
+        WHERE mod_id = #id#
+    </select>
+
+    <select id="findByText" parameterClass="java.util.Map" resultMap="ModelResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM model
+        WHERE (
+            LOWER(mod_name) LIKE ('%' || LOWER(#text#) || '%')
+            OR LOWER(mod_vendor_code) LIKE ('%' || LOWER(#text#) || '%')
+            OR LOWER(mod_keywords) LIKE ('%' || LOWER(#text#) || '%')
+        )
+        <isNotNull property="categoryId">
+            AND mod_category_id = #categoryId#
+        </isNotNull>
+        <isNotNull property="brandId">
+            AND mod_brand_id = #brandId#
+        </isNotNull>
+        ORDER BY mod_name ASC
+        LIMIT #limit#
+    </select>
+
+    <insert id="insert" parameterClass="Model">
+        <selectKey keyProperty="id" resultClass="int">
+            SELECT nextVal('model_mod_id_seq')
+        </selectKey>
+        INSERT INTO model (
+            <include refid="all-fields" />
+        ) VALUES (
+            #id#,
+            #categoryId#,
+            #paramSetId#,
+            #brandId#,
+            #name#,
+            #description#,
+            #vendorCode#,
+            #keywords#,
+            #site#,
+            #image#,
+            #paramDescription#
+        )
+    </insert>
+    
+    <update id="updateInfo" parameterClass="Model">
+        UPDATE model SET
+            mod_brand_id = #brandId#,
+            mod_name = #name#,
+            mod_description = #description#,
+            mod_vendor_code = #vendorCode#,
+            mod_keywords = #keywords#,
+            mod_site = #site#,
+            mod_image = #image#,
+            mod_param_description = #paramDescription#
+        WHERE mod_id = #id#
+    </update>
+    
+    <delete id="delete" parameterClass="int">
+        DELETE FROM model
+        WHERE mod_id = #id#
+    </delete>
+    
+</sqlMap>

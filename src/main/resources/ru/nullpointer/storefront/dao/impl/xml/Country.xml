@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Country">
+    <resultMap id="CountryResultMap" class="Country">
+        <result column="cnt_alpha2" property="alpha2" />
+        <result column="cnt_name" property="name" />
+    </resultMap>
+    
+    <sql id="all-fields">
+        cnt_alpha2,
+        cnt_name
+    </sql>
+    
+    <select id="selectByAlpha2" parameterClass="string" resultMap="CountryResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM country
+        WHERE cnt_alpha2 = #alpha2#
+    </select>
+  
+    <select id="selectList" resultMap="CountryResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM country
+        ORDER BY 
+        cnt_name ASC
+    </select>
+
+    <select id="selectMapByAlpha2Set" parameterClass="java.util.List" resultMap="CountryResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM country
+        WHERE cnt_alpha2 IN 
+        <iterate open="(" close=")" conjunction=",">
+            #[]#
+        </iterate>
+    </select>
+
+    <select id="selectByText" parameterClass="java.util.Map" resultMap="CountryResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM country
+        WHERE LOWER(cnt_alpha2) LIKE LOWER(#text#) || '%'
+        OR LOWER(cnt_alpha3) LIKE LOWER(#text#) || '%'
+        OR LOWER(cnt_eng_name) LIKE '%' || LOWER(#text#) || '%'
+        OR LOWER(cnt_name) LIKE '%' || LOWER(#text#) || '%'
+        OR LOWER(cnt_keywords) LIKE '%' || LOWER(#text#) || '%'
+        ORDER BY cnt_name ASC
+        LIMIT #limit#
+    </select>
+
+</sqlMap>

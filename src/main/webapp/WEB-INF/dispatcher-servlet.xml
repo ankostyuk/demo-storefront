@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+    <context:component-scan base-package="ru.nullpointer.storefront.web" />
+    <context:component-scan base-package="ru.nullpointer.storefront.validation" />
+
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>/WEB-INF/conf/main.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Enables annotated POJO @Controllers -->
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <ref bean="jsonHttpMessageConverter"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="jsonHttpMessageConverter"  class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
+
+    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"
+          p:order="0">
+    </bean>
+
+    <!-- Enables plain Controllers -->
+    <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" />
+
+    <bean id="urlMappings" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping"
+          p:order="1">
+        <property name="mappings">
+            <props>
+                <!-- Публичный раздел -->
+                <prop key="/agreement">staticViewController</prop>
+                <prop key="/agreement/rules">staticViewController</prop>
+                <prop key="/login">staticViewController</prop>
+                <prop key="/contacts">staticViewController</prop>
+                <prop key="/help/offer">staticViewController</prop>
+                <!-- /registration/company/* не работает по каким-то причинам -->
+                <prop key="/registration/company/partner">staticViewController</prop>
+                <prop key="/registration/company/agreement">staticViewController</prop>
+
+                <!-- Раздел поставщика -->
+                <prop key="/secured/company/welcome">staticViewController</prop>
+
+                <!-- Служебные страницы -->
+                <prop key="/404">staticViewController</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="staticViewController" class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
+
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver"
+          p:order="0">
+        <property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView"/>
+    </bean>
+
+    <bean id="miscViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+          p:order="1"
+          p:prefix="/WEB-INF/jsp/misc/"
+          p:suffix=".jsp" />
+
+    <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <map>
+                <entry key="ru.nullpointer.storefront.web.exception.NotFoundException" value="404" />
+                <entry key="org.springframework.web.multipart.MaxUploadSizeExceededException" value="upload_size_exceed" />
+                <entry key="org.springframework.beans.TypeMismatchException" value="400" />
+                <entry key="org.springframework.web.bind.MissingServletRequestParameterException" value="400" />
+                <entry key="org.springframework.web.HttpRequestMethodNotSupportedException" value="405" />
+            </map>
+        </property>
+        <property name="warnLogCategory" value="ru.nullpointer.storefront.web" />
+    </bean>
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- Максимальный размер загружаемого файла в байтах -->
+        <property name="maxUploadSize" value="3145728" />
+    </bean>
+
+    <!-- TODO ? -->
+        <!--<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver" p:order="1">
+                <property name="mediaTypes">
+                        <map>
+                             <entry key="json" value="application/json"/>
+                        </map>
+                </property>
+                <property name="defaultViews">
+                        <list>
+                            <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
+                        </list>
+                </property>
+        </bean>-->
+
+</beans>

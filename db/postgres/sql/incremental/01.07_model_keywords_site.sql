@@ -1,0 +1,4 @@
+ALTER TABLE model ADD COLUMN mod_keywords VARCHAR(255);
+ALTER TABLE model ADD COLUMN mod_site VARCHAR(255);
+
+INSERT INTO schema_version VALUES ('01.07');

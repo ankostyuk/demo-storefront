@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Ordinal">
+
+    <select id="selectGroup" parameterClass="java.util.Map" resultClass="java.lang.Object" remapResults="true">
+        SELECT $groupColumn$ FROM $tableName$
+        WHERE $idColumn$ = #id#
+    </select>
+
+    <select id="selectOrdinal" parameterClass="java.util.Map" resultClass="int" remapResults="true">
+        SELECT $ordinalColumn$ FROM $tableName$
+        WHERE $idColumn$ = #id#
+    </select>
+
+    <select id="selectLastOrdinal" parameterClass="java.util.Map" resultClass="int" remapResults="true">
+        SELECT MAX($ordinalColumn$) FROM $tableName$
+        WHERE $groupColumn$ = #group#
+    </select>
+
+    <update id="addOrdinal" parameterClass="java.util.Map">
+        UPDATE $tableName$ SET
+            $ordinalColumn$ = $ordinalColumn$ + (#value#)
+        WHERE $groupColumn$ = #group# AND
+        $ordinalColumn$ &gt;= #ordinal#
+        <isNotNull property="maxOrdinal">
+            AND $ordinalColumn$ &lt;= #maxOrdinal#
+        </isNotNull>
+    </update>
+
+    <update id="updateOrdinal" parameterClass="java.util.Map">
+        UPDATE $tableName$ SET
+            $ordinalColumn$ = #ordinal#
+        WHERE $idColumn$ = #id#
+    </update>
+
+</sqlMap>

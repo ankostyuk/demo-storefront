@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+"-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+"http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+    <!-- Регистрация -->
+    <definition name="registration/company/partner" extends="common-no-sidebar">
+        <put-attribute name="pageKey" cascade="true" value="registration/company/partner" />
+        <put-attribute name="metadata.title" cascade="true" value="Для компаний" />
+        <put-attribute name="content" value="/WEB-INF/jsp/registration/company/partner.jsp" />
+    </definition>
+
+    <!-- TODO при появлении платных акаунтов  -->
+    <!--<definition name="registration/company/agreement" extends="common-no-sidebar">
+        <put-attribute name="pageKey" cascade="true" value="registration/company/agreement" />
+        <put-attribute name="metadata.title" cascade="true" value="Пользовательское соглашение" />
+        <put-attribute name="content" value="/WEB-INF/jsp/registration/company/agreement.jsp" />
+    </definition>-->
+
+    <definition name="registration/company" extends="common-no-sidebar">
+        <put-attribute name="pageKey" cascade="true" value="registration/company" />
+        <put-attribute name="metadata.title" cascade="true" value="Регистрация" />
+        <put-attribute name="content" value="/WEB-INF/jsp/registration/company.jsp" />
+    </definition>
+      
+</tiles-definitions>

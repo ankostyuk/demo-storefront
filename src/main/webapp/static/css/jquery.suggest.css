@@ -1,0 +1,96 @@
+.jquery-suggest-edit {
+    border: 1px solid #808080;
+}
+
+.jquery-suggest-list {
+    border: 1px solid #808080;
+    border-top: 0;
+    background: #fafafa;
+    overflow: hidden;
+    display: block;
+    margin: 0;
+    padding: 0;
+    cursor: default;
+}
+
+.jquery-suggest-list ul {
+    border: 0;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    list-style-position: outside;
+    list-style: none;
+}
+
+.jquery-suggest-list li {
+    border-top: 1px solid #f0f0f0;
+    margin: 0;
+    padding: 0.1em 0.1em 0.1em 0.1em;
+    cursor: default;
+    display: block;
+    overflow: hidden;
+}
+
+.jquery-suggest-list li p {
+    margin: 0;
+    padding: 0;
+    color: #808080;
+    line-height: 100%;
+}
+
+.jquery-suggest-list-item-hover {
+    background-color: #f0f0f0;
+}
+
+.jquery-suggest-list-item-select {
+    background-color: #b4d5fe !important;
+}
+
+.jquery-suggest-list-tools {
+    border-top: 1px solid #e0e0e0;
+    padding: 0 0.2em 0 0.2em;
+    background-color: #d0d0d0;
+    text-align: center;
+    font-size: 100%;
+    line-height: 100%;
+}
+
+.jquery-suggest-list-tools table,.jquery-suggest-list-tools tbody,.jquery-suggest-list-tools tr,.jquery-suggest-list-tools td {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.jquery-suggest-list-tools table {
+    width: 100%;
+}
+
+.jquery-suggest-list-tools-paging {
+    text-align: left;
+}
+
+.jquery-suggest-list-tools-close {
+    text-align: right;
+}
+
+.jquery-suggest-list-tools .action {
+    font-weight: normal;
+}
+
+.jquery-suggest-list-tools .enabled {
+    color: #516897;
+    cursor: pointer;
+}
+
+.jquery-suggest-list-tools .disabled {
+    color: #a0a0a0;
+    cursor: default;
+}
+
+.jquery-suggest-list-tools .separator {
+    padding-left: 1em;
+}
+
+.jquery-suggest-search-highlight {
+    font-weight: bold;
+}

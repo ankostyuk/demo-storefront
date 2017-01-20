@@ -1,0 +1,26 @@
+/* Параметры шкуры */
+body {
+    background: url("../i/header/paints.png") no-repeat 220px 0 #fff; 
+}
+
+#navbar a {
+    color: #fffacf;
+}
+#navbar a:hover {
+    color: #010101;
+}
+#navbar .current {
+    font-weight: bold;
+    color: #ffffff;
+}
+
+#searchbar .options .text {
+    color: #ffffff;
+}
+#searchbar .options a {
+    color: #fffacf;
+}
+#searchbar .options a:hover {
+    color: #010101;
+}
+

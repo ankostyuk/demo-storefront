@@ -1,0 +1,380 @@
+body {
+    background: url("../i/company/desk.png") no-repeat 250px 0 #ffffff;
+}
+
+/* Header
+-----------------------------------------------------------------------------*/
+#header {
+    height: 200px;
+}
+#logo {
+    float: left;
+    margin: 40px 0 0 30px;
+}
+#searchbar {
+    margin: 0 220px 0 300px;
+    padding-top: 39px;
+    padding-right: 150px;
+    height: 135px;
+    background: url("../i/company/cup_pen.png") no-repeat 100% 0 transparent;
+}
+#searchbar .title {
+    font-size: 0.929em;
+    line-height: 1.538em;
+    background: url('../i/semi-white.png') repeat;
+}
+#outbox {
+    float: right;
+    padding: 53px 30px 0 0;
+    text-align: right;
+    height: 135px;
+    background: url("../i/company/catalog.png") no-repeat 23px 0 transparent;
+    width: 185px;
+}
+#outbox a {
+    font-size: 1.29em;
+    line-height: 2.22em;
+    white-space: nowrap;
+}
+
+#company-navbar {
+    position: absolute;
+    top: 135px;
+    left: 0;
+    width: 100%;
+    min-width: 1000px;
+    max-width: 1780px;
+}
+#company-navbar .menu {
+    float: left;
+    padding-left: 260px;
+    margin: 0;
+}
+#company-navbar .menu li {
+    float: left;
+    width: 200px;
+    height: 50px;
+    padding-top: 15px;
+    text-align: center;
+
+    background: url("../i/company/cell.png") no-repeat 0 -50px;
+}
+#company-navbar .menu li.current {
+    font-weight: bold;
+    color: #000000;
+    background: url("../i/company/cell.png") no-repeat 0 0;
+}
+#company-navbar .menu li.current a {
+    color: #000000;
+}
+#company-navbar .menu li.current a:hover {
+    color: #C52B13
+}
+
+#company-navbar .loginbar {
+    float: right;
+    padding-top: 15px;
+    padding-bottom: 15px; /* IE .login background fix */
+    margin: 0 10px 0 0;
+}
+#company-navbar .loginbar li {
+    display: inline;
+    margin-right: 20px;
+}
+#company-navbar .loginbar .login {
+    padding: 5px 10px 7px 10px;
+    color: #666666;
+    background: url("../i/dot-grid.png") repeat #f2f2f2;
+}
+
+/* Типовые элементы
+-----------------------------------------------------------------------------*/
+.offer-count-inline {
+    padding-left: 0.286em;
+    color: #666666;
+}
+
+/* Страница предложений
+-----------------------------------------------------------------------------*/
+/* Фильтр каталога */
+.catalog-tree-filter-box {
+    font-size: 0.929em;
+    margin: 0 0 1.072em;
+    white-space: nowrap;
+}
+
+/* Дерево каталога */
+.catalog-tree-box .current.disabled,
+.catalog-tree-box .disabled a{
+    color: #666666;
+}
+.catalog-tree-box {
+    padding-bottom: 1.429em;
+}
+.catalog-tree-box > ul {
+    font-size: 0.929em;
+}
+.catalog-tree-box > ul li {
+    line-height: 1.429em;
+}
+.catalog-tree-box ul > li {
+    margin: 0 0 1.429em 0;
+}
+.catalog-tree-box ul > li ul {
+    margin: 0 0 1.429em 1.429em;
+}
+.catalog-tree-box ul > li ul li {
+    margin: 0.714em 0 0 0;
+}
+.catalog-tree-box ul.tree.collapsable {
+    margin-left: 12px;
+}
+.catalog-tree-box ul.tree.collapsable li.has-collapse .node-collapse-tool {
+    margin: 6px 0 0 -12px;
+}
+/* Форма выбора категории */
+form.category-select .catalog-tree-box ul.items li > span {
+    padding-left: 0;
+}
+form.category-select .catalog-tree-box label {
+    color: #367cb8;
+    margin-left: 0;
+}
+form.category-select .catalog-tree-box .disabled {
+    color: #666666;
+}
+form.category-select .catalog-tree-box label input.radio {
+    margin-right: 0.357em;
+}
+form.category-select .catalog-tree-box ul.tree.collapsable {
+    margin-left: 17px;
+}
+form.category-select .catalog-tree-box ul.tree.collapsable li.has-collapse .node-collapse-tool {
+    margin: 5px 0 0 -17px;
+}
+form.category-select .catalog-tree-box ul.tree.collapsable li.has-collapse > .section-name {
+    cursor: pointer;
+}
+form.category-select .catalog-tree-box ul.tree.collapsable li.has-collapse > .section-name > span {
+    border-bottom: 1px dotted;
+}
+
+/* Предложения */
+.offers-top-box {
+    margin-bottom: 1.429em;
+}
+.offers-top-box .tools {
+    padding-top: 0.714em;
+}
+.offers-show-box {
+    margin: 0 0 1.072em 0;
+    font-size: 0.929em;
+    white-space: nowrap;
+}
+
+.offer-list {
+}
+.offer-list .match-item .offer-edit-info {
+    margin-left: 180px;
+    color: #999999;
+    font-size: 0.786em;/*11*/
+    line-height: 1.818em;
+}
+.offer-list .match-item .offer-edit-info .actions {
+    margin-left: 30px;
+}
+.offer-list .match-item .match-info .actual-info {
+    padding-top:0.714em;
+}
+.actual-info.actual {
+    color: 	#089d07;
+}
+.actual-info.no-actual {
+    color: 	#ff6666;
+}
+.offer-list .match-item .match-info .description {
+    padding-top:0.714em;
+}
+.offer-list .match-item .match-info .moderation-info {
+    padding-top:0.714em;
+}
+.moderation-info .approved {
+    display:inline-block;
+    padding: 0 4px;
+    background: url("../i/dot-grid.png") repeat scroll 0 0 #e6f5e6;
+    border: 1px solid #b4e1b4;
+    color: #089d07;
+}
+.moderation-info .rejected {
+    display:inline-block;
+    padding: 0 4px;
+    background: url("../i/dot-grid.png") repeat scroll 0 0 #ffefef;
+    border: 1px solid #ffd1d1;
+    color: #ff6666;
+}
+.moderation-info .rejection-list {
+    color: #000000;
+    margin: 0 0 4px 0;
+}
+.moderation-info .pending {
+    display:inline-block;
+    padding: 0 4px;
+    background: url("../i/dot-grid.png") repeat scroll 0 0 #ffffcc;
+    border: 1px solid #ecec7c;
+    color: #aaaa00;
+}
+
+/* Редактирование/добавление предложения
+-----------------------------------------------------------------------------*/
+.offer-moderation-info p {
+    margin: 0 0 0.714em 0;
+}
+.offer-moderation-info ul {
+    margin: 0 0 1.429em 1.429em;
+    list-style: disc outside none;
+}
+
+form.offer input.price {
+    width: 100px;
+}
+form.offer select.currency {
+    width: 100px;
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+form.offer .ratio-box {
+    display: inline-block;
+    min-width: 127px;
+    margin-left: 5px;
+    white-space: nowrap;
+}
+form.offer input.ratio {
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 50px;
+}
+form.offer .actual-box {
+    display: inline-block;
+    min-width: 536px;
+    white-space: nowrap;
+}
+form.offer .actual-box label.actual {
+    width: auto;
+}
+form.offer .actual-box input.actual-date {
+    margin-left: 10px;
+    width: 100px;
+}
+form.offer .param-box {
+    margin-top: 2.857em;
+}
+
+/* Настройки
+-----------------------------------------------------------------------------*/
+.settings-menu {
+    margin-bottom: 1.429em;
+}
+
+/* Настройки - Условия доставки
+-----------------------------------------------------------------------------*/
+.delivery-region-items-box li {
+    width: 355px;
+    padding: 0 0 0.714em 5px;
+    cursor: default;
+}
+.delivery-region-items-box li:hover {
+    background: url("../i/dot-grid.png") repeat #f2f2f2;
+}
+.delivery-region-items-box .item {
+    display: inline-block;
+}
+.delivery-region-items-box .item:hover {
+}
+.delivery-region-items-box .properties {
+    width: 330px;
+    float: left;
+}
+.delivery-region-items-box .properties p {
+    margin: 0;
+    padding: 0;
+}
+.delivery-region-items-box .properties p.path {
+    padding-top: 0.143em;
+    color: #999999;
+    font-size: 0.786em;
+    line-height: 1.072em;
+}
+.delivery-region-items-box .tools {
+    vertical-align: top;
+    text-align: right;
+    width: 20px;
+    margin: 5px 0 0 332px;
+}
+.delivery-region-items-box .tools a {
+    vertical-align: top;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    line-height: 1;
+    width: 9px;
+    height: 9px;
+    background: transparent url("../i/close-small.png") no-repeat;
+}
+form.plain .add-region-box {
+    padding-left: 5px;
+}
+form.plain .add-region-box label.text {
+    width: 80px;
+}
+form.plain .add-region-box input.text {
+    width: 255px;
+}
+form.plain .add-region-box p.hint {
+    margin-left: 90px;
+}
+form.plain .add-region-box .region-suggest-box {
+    margin-left: 90px;
+    padding: 4px 0 1.429em;
+}
+
+/* Настройки - Курсы валют
+-----------------------------------------------------------------------------*/
+form.currency {
+    padding-top: 0.357em;
+}
+form.currency h3.field-group-name {
+    margin: 1.429em 0;
+}
+form.currency .input-box {
+    display: inline-block;
+    width: 360px;
+}
+form.currency .rate {
+    color: #666666;
+    font-size: 0.929em;
+}
+form.currency .current,
+form.currency .current input {
+    font-weight: bold;
+}
+
+/* Настройки - Контакты
+-----------------------------------------------------------------------------*/
+.company-settings-contact .contacts {
+    margin: 1.429em 0;
+}
+.company-settings-contact .contacts h3 {
+    margin-bottom: 0.714em;
+}
+.company-settings-contact .contacts ul > li {
+    margin-bottom: 0.357em;
+}
+.company-settings-contact .contact-actions {
+    margin: 2.143em 0 2.143em 0;
+}
+.company-settings-contact .contacts .delete {
+    font-size:0.786em;
+    line-height:1.818em;
+    margin-left: 15px;
+}

@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+"-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+"http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+    <!-- Блок <head></head> -->
+    <definition name="head" template="/WEB-INF/jsp/template/head.jsp" >
+        <put-attribute name="cssIE" value="${style_ie.css}" />
+        <put-attribute name="cssIE7" value="${style_ie7.css}" />
+        <put-list-attribute name="cssList">
+            <!-- TODO все CSS в один файл ? -->
+            <add-attribute value="${jquery-ui.css}" />
+            <add-attribute value="${jquery.suggest.css}" />
+            <add-attribute value="${style.css}" />
+        </put-list-attribute>
+        <put-list-attribute name="scriptList" inherit="true">
+            <!-- TODO все скрипты в один файл и сжать -->
+            <add-attribute value="${jquery.js}" />
+            <add-attribute value="${jquery.ajaxmanager.js}" />
+            <add-attribute value="${jquery.suggest.js}" />
+            <add-attribute value="${jquery-ui.js}" />
+            <add-attribute value="${jquery.tools.js}" />
+            <add-attribute value="${jquery.listenerchange.js}" />
+            <add-attribute value="${jquery.form.js}" />
+            <add-attribute value="${jquery.ui.customslider.js}" />
+            <add-attribute value="${storefront.helper.js}" />
+        </put-list-attribute>
+    </definition>
+    
+    <!-- Шапка -->
+    <definition name="header" template="/WEB-INF/jsp/template/header.jsp"/>
+
+    <!-- Блок перед </body> -->
+    <definition name="foot" template="/WEB-INF/jsp/template/foot.jsp" />
+
+    <!-- Подвал -->
+    <definition name="footer" template="/WEB-INF/jsp/template/footer.jsp" />
+    
+    <!-- Макет без колонок -->
+    <definition name="common-no-sidebar" template="/WEB-INF/jsp/template/common-no-sidebar.jsp" preparer="publicViewPreparer">
+        <put-attribute name="pageKey" value="" />
+        <put-attribute name="metadata.title" value="" />
+        <put-attribute name="metadata.description" value="" />
+        <put-attribute name="metadata.keywords" value="" />
+        <put-attribute name="head" value="head" type="definition" />
+        <put-attribute name="header" value="header" type="definition" />
+        <put-attribute name="footer" value="footer" type="definition" />
+        <put-attribute name="foot" value="foot" type="definition" />
+    </definition>
+
+    <!-- Макет с правой колонкой -->
+    <definition name="common-right-sidebar" template="/WEB-INF/jsp/template/common-right-sidebar.jsp" preparer="publicViewPreparer">
+        <put-attribute name="pageKey" value="" />
+        <put-attribute name="metadata.title" value="" />
+        <put-attribute name="metadata.description" value="" />
+        <put-attribute name="metadata.keywords" value="" />
+        <put-attribute name="head" value="head" type="definition" />
+        <put-attribute name="header" value="header" type="definition" />
+        <put-attribute name="footer" value="footer" type="definition" />
+        <put-attribute name="foot" value="foot" type="definition" />
+    </definition>
+
+    <!-- Стартовая страница -->
+    <definition name="index" extends="common-no-sidebar">
+        <put-attribute name="pageKey" cascade="true" value="index" />
+        <put-attribute name="metadata.title" cascade="true" value="Бильдика - товары для строительства и ремонта" />
+        <put-attribute name="metadata.description" cascade="true" value="Поиск и выбор товаров для строительства и ремонта." />
+        <put-attribute name="metadata.keywords" cascade="true" value="поиск по параметрам, цены, сравнения, отзыв, оценки, мнения, тест, где купить, рейтинг, описание, выбор, оптимальный, технические характеристики" />
+        <put-attribute name="content" value="/WEB-INF/jsp/index.jsp" />
+    </definition>
+
+    <!-- Раздел каталога -->
+    <definition name="section" extends="common-no-sidebar">
+        <put-attribute name="content" value="/WEB-INF/jsp/section.jsp" />
+    </definition>
+
+    <!-- Категория каталога -->
+    <definition name="category" extends="common-right-sidebar">
+        <put-attribute name="content" value="/WEB-INF/jsp/category.jsp" />
+    </definition>
+
+    <definition name="category/term" extends="common-right-sidebar">
+        <put-attribute name="content" value="/WEB-INF/jsp/category/term.jsp" />
+    </definition>
+
+    <!-- Модель -->
+    <definition name="model" extends="common-right-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Модель" />
+        <put-attribute name="content" value="/WEB-INF/jsp/model.jsp" />
+    </definition>
+
+    <definition name="model/offers" extends="common-right-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Цены на модель" />
+        <put-attribute name="content" value="/WEB-INF/jsp/model/offers.jsp" />
+    </definition>
+
+    <!-- Предложение -->
+    <definition name="offer" extends="common-right-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Товарное предложение" />
+        <put-attribute name="content" value="/WEB-INF/jsp/offer.jsp" />
+    </definition>
+
+    <!-- Словарь терминов -->
+    <definition name="term" extends="common-right-sidebar">
+        <put-attribute name="pageKey" cascade="true" value="term" />
+        <put-attribute name="metadata.title" cascade="true" value="Словарь строительных терминов" />
+        <put-attribute name="metadata.description" cascade="true" value="Собрание терминов, используемых в области строительства и ремонта." />
+        <put-attribute name="headerTheme" cascade="true" value="term" />
+        <put-attribute name="content" value="/WEB-INF/jsp/term.jsp" />
+    </definition>
+
+    <!-- Список сравнения -->
+    <definition name="category/comparison" extends="common-no-sidebar">
+        <put-attribute name="content" value="/WEB-INF/jsp/category/comparison.jsp" />
+    </definition>
+
+    <definition name="category/comparison/delete" extends="common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Удаление из сравнения" />
+        <put-attribute name="content" value="/WEB-INF/jsp/category/comparison/delete.jsp" />
+    </definition>
+
+    <definition name="category/comparison/add" extends="common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Добавление к сравнению" />
+        <put-attribute name="content" value="/WEB-INF/jsp/category/comparison/add.jsp" />
+    </definition>
+
+    <definition name="category/comparison/clear" extends="common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Очистка списка сравнения" />
+        <put-attribute name="content" value="/WEB-INF/jsp/category/comparison/clear.jsp" />
+    </definition>
+
+    <!-- Списки покупок -->
+    <definition name="cart" extends="common-right-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Список покупок" />
+        <put-attribute name="content" value="/WEB-INF/jsp/cart.jsp" />
+        <put-attribute name="pageKey" cascade="true" value="cart" />
+    </definition>
+
+    <definition name="cart/add" extends="common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Добавление списка покупок" />
+        <put-attribute name="content" value="/WEB-INF/jsp/cart/form.jsp" />
+        <put-attribute name="pageKey" cascade="true" value="cart/add" />
+    </definition>
+
+    <definition name="cart/edit" extends="common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Редактировние списка покупок" />
+        <put-attribute name="content" value="/WEB-INF/jsp/cart/form.jsp" />
+        <put-attribute name="pageKey" cascade="true" value="cart/edit" />
+    </definition>
+
+    <definition name="cart/delete" extends="common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Удаление списка покупок" />
+        <put-attribute name="content" value="/WEB-INF/jsp/cart/delete.jsp" />
+        <put-attribute name="pageKey" cascade="true" value="cart/delete" />
+    </definition>
+
+    <definition name="cart/item/add" extends="common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Добавление в список покупок" />
+        <put-attribute name="content" value="/WEB-INF/jsp/cart/item/add.jsp" />
+        <put-attribute name="pageKey" cascade="true" value="cart/item/add" />
+    </definition>
+
+    <definition name="cart/item/move" extends="common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Перемещение из списка покупок" />
+        <put-attribute name="content" value="/WEB-INF/jsp/cart/item/move.jsp" />
+        <put-attribute name="pageKey" cascade="true" value="cart/item/move" />
+    </definition>
+
+    <definition name="cart/item/delete" extends="common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Удаление из списка покупок" />
+        <put-attribute name="content" value="/WEB-INF/jsp/cart/item/delete.jsp" />
+        <put-attribute name="pageKey" cascade="true" value="cart/item/delete" />
+    </definition>
+
+    <!-- Поставщик -->
+    <definition name="company" extends="common-right-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Поставщик" />
+        <put-attribute name="content" value="/WEB-INF/jsp/company.jsp" />
+    </definition>
+
+    <!-- Бренд -->
+    <definition name="brand" extends="common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Бренд" />
+        <put-attribute name="content" value="/WEB-INF/jsp/brand.jsp" />
+    </definition>
+
+    <!-- Поиск -->
+    <definition name="search/empty" extends="common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Результаты поиска" />
+        <put-attribute name="content" value="/WEB-INF/jsp/search/empty.jsp" />
+    </definition>
+
+    <definition name="search/result" extends="common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Результаты поиска" />
+        <put-attribute name="content" value="/WEB-INF/jsp/search/result.jsp" />
+    </definition>
+
+    <!-- Настройки -->
+    <definition name="settings" extends="common-no-sidebar">
+        <put-attribute name="pageKey" cascade="true" value="settings" />
+        <put-attribute name="metadata.title" cascade="true" value="Настройки" />
+        <put-attribute name="content" value="/WEB-INF/jsp/settings.jsp" />
+    </definition>
+
+    <definition name="settings/region" extends="common-no-sidebar">
+        <put-attribute name="pageKey" cascade="true" value="settings/region" />
+        <put-attribute name="metadata.title" cascade="true" value="Настройка региона" />
+        <put-attribute name="content" value="/WEB-INF/jsp/settings/region.jsp" />
+    </definition>
+
+    <!-- Логин -->
+    <definition name="login" extends="common-no-sidebar">
+        <put-attribute name="pageKey" cascade="true" value="login" />
+        <put-attribute name="metadata.title" cascade="true" value="Вход" />
+        <put-attribute name="content" value="/WEB-INF/jsp/login.jsp" />
+    </definition>
+
+    <definition name="login/reminder" extends="common-no-sidebar">
+        <put-attribute name="pageKey" cascade="true" value="login/reminder" />
+        <put-attribute name="metadata.title" cascade="true" value="Восстановление пароля" />
+        <put-attribute name="content" value="/WEB-INF/jsp/login/reminder.jsp" />
+    </definition>
+
+    <!-- Регистрация -->
+    <definition name="registration/success" extends="common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Регистрация прошла успешно" />
+        <put-attribute name="content" value="/WEB-INF/jsp/registration/success.jsp" />
+    </definition>
+
+    <definition name="registration/activation" extends="common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Активация учетной записи" />
+        <put-attribute name="content" value="/WEB-INF/jsp/registration/activation.jsp" />
+    </definition>
+
+    <!-- Пользовательское соглашение -->
+    <definition name="agreement" extends="common-no-sidebar">
+        <put-attribute name="pageKey" cascade="true" value="agreement" />
+        <put-attribute name="metadata.title" cascade="true" value="Пользовательское соглашение" />
+        <put-attribute name="content" value="/WEB-INF/jsp/agreement.jsp" />
+    </definition>
+
+    <!-- Правила размещения рекламных материалов -->
+    <definition name="agreement/rules" extends="common-no-sidebar">
+        <put-attribute name="pageKey" cascade="true" value="agreement/rules" />
+        <put-attribute name="metadata.title" cascade="true" value="Правила размещения информационных материалов" />
+        <put-attribute name="content" value="/WEB-INF/jsp/agreement/rules.jsp" />
+    </definition>
+
+    <!-- Контакты -->
+    <definition name="contacts" extends="common-no-sidebar">
+        <put-attribute name="pageKey" cascade="true" value="contacts" />
+        <put-attribute name="metadata.title" cascade="true" value="Контакты" />
+        <put-attribute name="content" value="/WEB-INF/jsp/contacts.jsp" />
+    </definition>
+
+    <!-- Помощь, справка, советы -->
+    <definition name="help/offer" extends="common-no-sidebar">
+        <put-attribute name="pageKey" cascade="true" value="help/offer" />
+        <put-attribute name="metadata.title" cascade="true" value="Как правильно размещать товарные предложения" />
+        <put-attribute name="content" value="/WEB-INF/jsp/help/offer.jsp" />
+    </definition>
+
+</tiles-definitions>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:beans xmlns="http://www.springframework.org/schema/security"
+         xmlns:b="http://www.springframework.org/schema/beans"
+         xmlns:util="http://www.springframework.org/schema/util"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+         http://www.springframework.org/schema/util
+         http://www.springframework.org/schema/util/spring-util-3.0.xsd
+         http://www.springframework.org/schema/security
+         http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+
+    <http auto-config="false">
+        <intercept-url pattern="/secured/admin/**" access="ROLE_ADMIN" />
+        <intercept-url pattern="/secured/company/**" access="ROLE_COMPANY" />
+        <intercept-url pattern="/secured/manager/catalog/**" access="ROLE_MANAGER_CATALOG" />
+        <intercept-url pattern="/secured/manager/model/**" access="ROLE_MANAGER_MODEL" />
+        <intercept-url pattern="/secured/manager/brand/**" access="ROLE_MANAGER_BRAND" />
+        <intercept-url pattern="/secured/manager/term/**" access="ROLE_MANAGER_DICTIONARY" />
+        <intercept-url pattern="/secured/manager/moderator/offer/**" access="ROLE_MANAGER_MODERATOR_OFFER" />
+        <intercept-url pattern="/secured/manager/company/**" access="ROLE_MANAGER_COMPANY_LOGIN" />
+        <intercept-url pattern="/secured/manager/**" access="ROLE_MANAGER_CATALOG,ROLE_MANAGER_MODEL,ROLE_MANAGER_BRAND,ROLE_MANAGER_DICTIONARY,ROLE_MANAGER_MODERATOR_OFFER,ROLE_MANAGER_COMPANY_LOGIN" />
+
+        <form-login login-page="/login"
+                    login-processing-url="/login/check"
+                    authentication-failure-url="/login?error"
+                    default-target-url="/secured/gateway" />
+        <logout logout-url="/logout" />
+    </http>
+
+    <authentication-manager>
+        <authentication-provider ref="accountAuthenticationProvider" />
+    </authentication-manager>
+
+    <!-- Password encoder for RegistrationService -->
+    <b:bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
+        <b:constructor-arg value="256" />
+    </b:bean>
+
+    <b:bean id="accountAuthenticationProvider" class="ru.nullpointer.storefront.security.AccountAuthenticationProvider">
+        <b:property name="registrationService" ref="registrationService" />
+        <b:property name="securityService" ref="securityService" />
+    </b:bean>
+
+    <!-- Method Security -->
+    <global-method-security secured-annotations="enabled" access-decision-manager-ref="accessDecisionManager" />
+
+    <b:bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
+        <b:property name="allowIfAllAbstainDecisions" value="false" />
+        <b:property name="decisionVoters">
+            <b:list>
+                <b:ref local="roleVoter" />
+                <b:ref local="authenticatedVoter" />
+            </b:list>
+        </b:property>
+    </b:bean>
+
+    <b:bean id="roleVoter" class="org.springframework.security.access.vote.RoleVoter" />
+    <b:bean id="authenticatedVoter" class="org.springframework.security.access.vote.AuthenticatedVoter" />
+
+</b:beans>

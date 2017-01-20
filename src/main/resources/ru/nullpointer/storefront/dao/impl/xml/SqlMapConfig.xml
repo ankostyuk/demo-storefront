@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+<sqlMapConfig>
+
+    <settings useStatementNamespaces="true"
+              lazyLoadingEnabled="true"
+              enhancementEnabled="true"/>
+
+    <!-- Type aliases -->
+    <typeAlias alias="Account" type="ru.nullpointer.storefront.domain.Account" />
+    <typeAlias alias="Company" type="ru.nullpointer.storefront.domain.Company" />
+    <typeAlias alias="CatalogItem" type="ru.nullpointer.storefront.domain.CatalogItem" />
+    <typeAlias alias="Category" type="ru.nullpointer.storefront.domain.Category" />
+    <typeAlias alias="Offer" type="ru.nullpointer.storefront.domain.Offer" />
+    <typeAlias alias="CurrencyRate" type="ru.nullpointer.storefront.domain.CurrencyRate" />
+    <typeAlias alias="ExtraCurrency" type="ru.nullpointer.storefront.domain.ExtraCurrency" />
+    <typeAlias alias="Unit" type="ru.nullpointer.storefront.domain.Unit" />
+    <typeAlias alias="Region" type="ru.nullpointer.storefront.domain.Region" />
+    <typeAlias alias="ParamSetDescriptor" type="ru.nullpointer.storefront.domain.param.ParamSetDescriptor" />
+    <typeAlias alias="ParamGroup" type="ru.nullpointer.storefront.domain.param.ParamGroup" />
+    <typeAlias alias="Param" type="ru.nullpointer.storefront.domain.param.Param" />
+    <typeAlias alias="BooleanParam" type="ru.nullpointer.storefront.domain.param.BooleanParam" />
+    <typeAlias alias="NumberParam" type="ru.nullpointer.storefront.domain.param.NumberParam" />
+    <typeAlias alias="SelectParam" type="ru.nullpointer.storefront.domain.param.SelectParam" />
+    <typeAlias alias="ParamSelectOption" type="ru.nullpointer.storefront.domain.param.ParamSelectOption" />
+    <typeAlias alias="Match" type="ru.nullpointer.storefront.domain.Match" />
+    <typeAlias alias="Model" type="ru.nullpointer.storefront.domain.Model" />
+    <typeAlias alias="ModelInfo" type="ru.nullpointer.storefront.domain.ModelInfo" />
+    <typeAlias alias="Brand" type="ru.nullpointer.storefront.domain.Brand" />
+    <typeAlias alias="Contact" type="ru.nullpointer.storefront.domain.Contact" />
+    <typeAlias alias="Term" type="ru.nullpointer.storefront.domain.Term" />
+    <typeAlias alias="Country" type="ru.nullpointer.storefront.domain.Country" />
+    <typeAlias alias="SessionDescriptor" type="ru.nullpointer.storefront.domain.SessionDescriptor" />
+    <typeAlias alias="Settings" type="ru.nullpointer.storefront.domain.Settings" />
+    <typeAlias alias="ComparisonListItem" type="ru.nullpointer.storefront.domain.ComparisonListItem" />
+    <typeAlias alias="Cart" type="ru.nullpointer.storefront.domain.Cart" />
+    <typeAlias alias="CartItem" type="ru.nullpointer.storefront.domain.CartItem" />
+
+    <typeAlias alias="Role" type="ru.nullpointer.storefront.domain.Role" />
+    
+    <typeAlias alias="StringCount" type="ru.nullpointer.storefront.domain.support.StringCount" />
+    
+    <!-- SQL maps -->
+    <sqlMap resource="ru/nullpointer/storefront/dao/impl/xml/Common.xml" />
+
+    <sqlMap resource="ru/nullpointer/storefront/dao/impl/xml/Ordinal.xml" />
+
+    <sqlMap resource="ru/nullpointer/storefront/dao/impl/xml/Account.xml" />
+    <sqlMap resource="ru/nullpointer/storefront/dao/impl/xml/Company.xml" />
+    <sqlMap resource="ru/nullpointer/storefront/dao/impl/xml/CatalogItem.xml" />
+    <sqlMap resource="ru/nullpointer/storefront/dao/impl/xml/Category.xml" />
+    <sqlMap resource="ru/nullpointer/storefront/dao/impl/xml/Offer.xml" />
+    <sqlMap resource="ru/nullpointer/storefront/dao/impl/xml/CurrencyRate.xml" />
+    <sqlMap resource="ru/nullpointer/storefront/dao/impl/xml/ExtraCurrency.xml" />
+    <sqlMap resource="ru/nullpointer/storefront/dao/impl/xml/Unit.xml" />
+    <sqlMap resource="ru/nullpointer/storefront/dao/impl/xml/Region.xml" />
+    <sqlMap resource="ru/nullpointer/storefront/dao/impl/xml/ParamSet.xml" />
+    <sqlMap resource="ru/nullpointer/storefront/dao/impl/xml/ParamGroup.xml" />
+    <sqlMap resource="ru/nullpointer/storefront/dao/impl/xml/Param.xml" />
+    <sqlMap resource="ru/nullpointer/storefront/dao/impl/xml/ParamSelectOption.xml" />
+    <sqlMap resource="ru/nullpointer/storefront/dao/impl/xml/Match.xml" />
+    <sqlMap resource="ru/nullpointer/storefront/dao/impl/xml/Model.xml" />
+    <sqlMap resource="ru/nullpointer/storefront/dao/impl/xml/Brand.xml" />
+    <sqlMap resource="ru/nullpointer/storefront/dao/impl/xml/Contact.xml" />
+    <sqlMap resource="ru/nullpointer/storefront/dao/impl/xml/Term.xml" />
+    <sqlMap resource="ru/nullpointer/storefront/dao/impl/xml/Country.xml" />
+    <sqlMap resource="ru/nullpointer/storefront/dao/impl/xml/SessionDescriptor.xml" />
+    <sqlMap resource="ru/nullpointer/storefront/dao/impl/xml/Settings.xml" />
+    <sqlMap resource="ru/nullpointer/storefront/dao/impl/xml/ComparisonListItem.xml" />
+    <sqlMap resource="ru/nullpointer/storefront/dao/impl/xml/Cart.xml" />
+    <sqlMap resource="ru/nullpointer/storefront/dao/impl/xml/CartItem.xml" />
+
+</sqlMapConfig>

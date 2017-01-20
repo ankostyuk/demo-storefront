@@ -1,0 +1,23 @@
+/* Параметры шкуры */
+body {
+    background: url("../i/header/stairs.png") no-repeat 190px 0 #fff; 
+}
+
+#navbar a {
+    color: #010101;
+}
+#navbar a:hover {
+    color: #fffacf;
+
+}
+
+#searchbar .options .text {
+    color: #ffffff;
+}
+#searchbar .options a {
+    color: #fffacf;
+}
+#searchbar .options a:hover {
+    color: #010101;
+}
+

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Company">
+    <resultMap id="CompanyResultMap" class="Company">
+        <result column="com_id" property="id" />
+        <result column="com_name" property="name" />
+        <result column="com_region_id" property="regionId" />
+        <result column="com_address" property="address" />
+        <result column="com_contact_phone" property="contactPhone" />
+        <result column="com_contact_person" property="contactPerson" />
+        <result column="com_site" property="site" />
+        <result column="com_schedule" property="schedule" />
+        <result column="com_scope" property="scope" />
+        <result column="com_delivery_conditions" property="deliveryConditions" />
+        <result column="com_payment_conditions" property="paymentConditions.text" />
+        <result column="com_payment_cash" property="paymentConditions.cash" />
+        <result column="com_payment_cashless" property="paymentConditions.cashless" />
+        <result column="com_logo" property="logo" />
+    </resultMap>
+    
+    <sql id="all-fields">
+        com_id,
+        com_name,
+        com_region_id,
+        com_address,
+        com_contact_phone,
+        com_contact_person,
+        com_site,
+        com_schedule,
+        com_scope,
+        com_delivery_conditions,
+        com_payment_conditions,
+        com_payment_cash,
+        com_payment_cashless,
+        com_logo
+    </sql>
+
+    <sql id="name-text-condition">
+        LOWER(com_name) LIKE LOWER('%' || #text# || '%')
+    </sql>
+
+    <select id="selectById" parameterClass="int" resultMap="CompanyResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM company
+        WHERE com_id = #id#
+    </select>
+  
+    <select id="selectMapByIdSet" parameterClass="java.util.List" resultMap="CompanyResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM company
+        WHERE com_id IN 
+        <iterate open="(" close=")" conjunction=",">
+            #[]#
+        </iterate>
+    </select>
+
+    <select id="selectByText" parameterClass="java.util.Map" resultMap="CompanyResultMap">
+        SELECT
+            <include refid="all-fields" />,
+            acc_email_authenticated_date
+        FROM company
+        JOIN account ON com_id = acc_id
+        <isNotNull property="text">
+            WHERE <include refid="name-text-condition" />
+        </isNotNull>
+        ORDER BY acc_email_authenticated_date DESC NULLS FIRST
+        LIMIT #limit#
+        OFFSET #offset#
+    </select>
+
+    <select id="countByText" parameterClass="java.util.Map" resultClass="int">
+        SELECT COUNT(*)
+        FROM company
+        <isNotNull property="text">
+            WHERE <include refid="name-text-condition" />
+        </isNotNull>
+    </select>
+
+    <insert id="insert" parameterClass="Company">
+        INSERT INTO company (
+            <include refid="all-fields" />
+        ) VALUES (
+            #id#,
+            #name#,
+            #regionId#,
+            #address#,
+            #contactPhone#,
+            #contactPerson#,
+            #site#,
+            #schedule#,
+            #scope#,
+            #deliveryConditions#,
+            #paymentConditions.text#,
+            #paymentConditions.cash#,
+            #paymentConditions.cashless#,
+            #logo#
+        )
+    </insert>
+    
+    <update id="update" parameterClass="Company">
+        UPDATE company SET
+            com_name = #name#,
+            com_region_id = #regionId#,
+            com_address = #address#,
+            com_contact_phone = #contactPhone#,
+            com_contact_person = #contactPerson#,
+            com_site = #site#,
+            com_schedule = #schedule#,
+            com_scope = #scope#,
+            com_delivery_conditions = #deliveryConditions#,
+            com_payment_conditions = #paymentConditions.text#,
+            com_payment_cash = #paymentConditions.cash#,
+            com_payment_cashless = #paymentConditions.cashless#,
+            com_logo = #logo#
+        WHERE com_id = #id#
+    </update>
+
+    <update id="updateInfo" parameterClass="Company">
+        UPDATE company SET
+            com_name = #name#, <!-- TODO Подумать об обновлении name -->
+            com_region_id = #regionId#,
+            com_address = #address#,
+            com_contact_phone = #contactPhone#,
+            com_contact_person = #contactPerson#,
+            com_site = #site#,
+            com_schedule = #schedule#,
+            com_scope = #scope#,
+            com_delivery_conditions = #deliveryConditions#,
+            com_payment_conditions = #paymentConditions.text#,
+            com_payment_cash = #paymentConditions.cash#,
+            com_payment_cashless = #paymentConditions.cashless#,
+            com_logo = #logo#
+        WHERE com_id = #id#
+    </update>
+</sqlMap>

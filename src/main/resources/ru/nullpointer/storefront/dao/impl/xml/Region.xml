@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Region">
+    <resultMap id="RegionResultMap" class="Region">
+        <result column="reg_id" property="id" />
+        <result column="reg_name" property="name" />
+        <result column="reg_left" property="left" />
+        <result column="reg_right" property="right" />
+    </resultMap>
+
+    <!--
+        Не удалять!
+        Используется в Settings.xml
+    -->
+    <sql id="all-fields">
+        reg_id,
+        reg_name,
+        reg_left,
+        reg_right
+    </sql>
+    
+    <sql id="name-text-condition">
+        LOWER(reg_name) LIKE LOWER(#text# || '%') OR
+        LOWER(reg_name) LIKE LOWER('% ' || #text# || '%') OR
+        LOWER(reg_name) LIKE LOWER('%-' || #text# || '%') OR
+        LOWER(reg_name) LIKE LOWER('%(' || #text# || '%')
+    </sql>
+    
+    <select id="selectById" parameterClass="int" resultMap="RegionResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM region
+        WHERE reg_id = #id#
+    </select>
+
+    <select id="selectByNameText" parameterClass="String" resultMap="RegionResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM region
+        WHERE 
+            <include refid="name-text-condition" />
+        ORDER BY (reg_left - reg_right) ASC, reg_name ASC 
+    </select>
+    
+    <select id="selectPaginatedByNameText" parameterClass="java.util.Map" resultMap="RegionResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM region
+        WHERE 
+            <include refid="name-text-condition" />
+        ORDER BY (reg_left - reg_right) ASC, reg_name ASC 
+        OFFSET #offset# LIMIT #limit#
+    </select>
+    
+    <select id="countByNameText" parameterClass="String" resultClass="int">
+        SELECT COUNT(*)
+        FROM region
+        WHERE 
+            <include refid="name-text-condition" />
+    </select>
+
+    <select id="selectPath" parameterClass="Region" resultMap="RegionResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM region
+        WHERE reg_left &lt; #left# AND reg_right &gt; #right#
+        ORDER BY reg_left ASC
+    </select>
+
+    <select id="selectMapByIdSet" parameterClass="java.util.List" resultMap="RegionResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM region
+        WHERE reg_id IN
+        <iterate open="(" close=")" conjunction=",">
+            #[]#
+        </iterate>
+    </select>
+
+    <select id="selectCompanyDelivery" parameterClass="int" resultMap="RegionResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM region JOIN delivery ON (reg_id = del_region_id)
+        WHERE del_company_id = #companyId#
+        ORDER BY reg_name ASC
+    </select>
+
+    <insert id="insertCompanyDelivery" parameterClass="java.util.Map">
+        INSERT INTO delivery (
+            del_company_id,
+            del_region_id
+        ) VALUES (
+            #companyId#,
+            #regionId#
+        )
+    </insert>
+
+    <delete id="deleteCompanyDelivery" parameterClass="java.util.Map">
+        DELETE FROM delivery WHERE
+        del_company_id = #companyId# AND del_region_id = #regionId#
+    </delete>
+</sqlMap>

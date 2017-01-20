@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:aop="http://www.springframework.org/schema/aop" 
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context" 
+    xmlns:tx="http://www.springframework.org/schema/tx" 
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+    <context:component-scan base-package="ru.nullpointer.storefront" />
+
+    <aop:aspectj-autoproxy />
+
+    <bean id="searchIndexAspect" class="ru.nullpointer.storefront.aspect.SearchIndexAspect" />
+
+    <bean id="lifecycleProcessor" class="org.springframework.context.support.DefaultLifecycleProcessor">
+        <property name="timeoutPerShutdownPhase" value="1000" />
+    </bean>
+
+    <bean id="threadPoolTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor" scope="prototype" />
+
+    <bean id="searchLifecycle" class="ru.nullpointer.storefront.service.search.SearchLifecycle">
+        <constructor-arg name="threadPoolTaskExecutor" ref="threadPoolTaskExecutor" />
+        <constructor-arg name="autoStartup" value="true" />
+        <property name="createIndexOnStartup" value="false" />
+        <property name="waitOnShutdown" value="true" />
+        <property name="waitOnShutdownTimeout" value="30" />
+        <property name="waitOnShutdownTimeUnit" value="SECONDS" />
+    </bean>
+
+    <bean id="currencyConfig" class="ru.nullpointer.storefront.config.CurrencyConfig">
+        <property name="defaultCurrency" value="RUB" />
+        <property name="currencyList">
+            <list>
+                <value>RUB</value>
+                <value>USD</value>
+                <value>EUR</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>/ru/nullpointer/storefront/test/test-jdbc.properties</value>
+                <value>/WEB-INF/conf/main.properties</value>
+                <value>/WEB-INF/conf/image.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="freemarkerConfig" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
+        <qualifier value="emailTemplateConfiguration" />
+        <property name="templateLoaderPath" value="/WEB-INF/freemarker/email/" />
+        <property name="defaultEncoding" value="UTF-8" />
+        <property name="freemarkerVariables">
+            <map>
+                <entry key="global_site_url" value="http://localhost:8084/storefront" />
+            </map>
+        </property>
+    </bean>
+
+    <bean id="mailSender" class="ru.nullpointer.storefront.test.service.DummyMailSender" />
+
+    <!-- Password encoder for RegistrationService -->
+    <bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
+        <constructor-arg value="256" />
+    </bean>
+
+    <bean id="imageCaptchaService" class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService" />
+
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>/WEB-INF/i18n/validation</value>
+                <value>/WEB-INF/i18n/currency</value>
+                <value>/WEB-INF/i18n/ui</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driver}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+        <property name="poolPreparedStatements" value="true" />
+        <property name="maxActive" value="10" />
+        <property name="maxIdle" value="10" />
+    </bean>
+
+    <bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+        <property name="configLocation">
+            <value>classpath:/ru/nullpointer/storefront/dao/impl/xml/SqlMapConfig.xml</value>
+        </property>
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <tx:annotation-driven transaction-manager="transactionManager" />
+
+    <import resource="classpath:/WEB-INF/applicationContext-security.xml" />
+    <import resource="classpath:/WEB-INF/daoContext.xml" />
+</beans>

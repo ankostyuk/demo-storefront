@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="CartItem">
+    <resultMap id="CartItemResultMap" class="CartItem">
+        <result column="cit_cart_id" property="cartId" />
+        <result column="cit_date_added" property="dateAdded" />
+        <result column="cit_match_type" property="match.type" />
+        <result column="cit_match_id" property="match.id" />
+    </resultMap>
+    
+    <sql id="all-fields">
+        cit_cart_id,
+        cit_date_added,
+        cit_match_type,
+        cit_match_id
+    </sql>
+    
+    <select id="selectBySessionId" parameterClass="int" resultMap="CartItemResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM cart_item
+        JOIN cart ON cit_cart_id = cart_id
+        WHERE cart_session_id = #sessionId#
+        ORDER BY cit_cart_id, cit_date_added
+    </select>
+
+    <insert id="insert" parameterClass="CartItem">
+        INSERT INTO cart_item (
+            <include refid="all-fields" />
+        ) VALUES (
+            #cartId#,
+            #dateAdded#,
+            #match.type#::t_match_type,
+            #match.id#
+        )
+    </insert>
+
+    <delete id="delete" parameterClass="CartItem">
+        DELETE FROM cart_item
+        WHERE cit_cart_id = #cartId#
+        AND cit_match_type = #match.type#::t_match_type
+        AND cit_match_id = #match.id#
+    </delete>
+
+</sqlMap>

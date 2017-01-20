@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Contact">
+    <resultMap id="ContactResultMap" class="Contact">
+        <result column="con_id" property="id" />
+        <result column="con_account_id" property="accountId" />
+        <result column="con_type" property="type" />
+        <result column="con_value" property="value" />
+        <result column="con_label" property="label" />
+    </resultMap>
+
+    <sql id="all-fields">
+        con_id,
+        con_account_id,
+        con_type,
+        con_value,
+        con_label
+    </sql>
+
+    <select id="selectByAccountId" parameterClass="int" resultMap="ContactResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM contact
+        WHERE con_account_id = #id#
+        ORDER BY con_type, con_id
+    </select>
+
+    <select id="selectById" parameterClass="int" resultMap="ContactResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM contact
+        WHERE con_id = #id#
+    </select>
+  
+    <insert id="insert" parameterClass="Contact">
+        <selectKey keyProperty="id" resultClass="int">
+            SELECT nextVal('contact_con_id_seq')
+        </selectKey>
+        INSERT INTO contact (
+            <include refid="all-fields" />
+        ) VALUES (
+            #id#,
+            #accountId#,
+            #type#::t_contact_type,
+            #value#,
+            #label#
+        )
+    </insert>
+    
+    <update id="updateInfo" parameterClass="Contact">
+        UPDATE contact SET
+            con_type = #type#::t_contact_type,
+            con_value = #value#,
+            con_label = #label#
+        WHERE con_id = #id#
+    </update>
+    
+    <delete id="delete" parameterClass="int">
+        DELETE FROM contact
+        WHERE con_id = #id#
+    </delete>
+    
+</sqlMap>

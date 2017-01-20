@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="SessionDescriptor">
+    <resultMap id="SessionDescriptorResultMap" class="SessionDescriptor">
+        <result column="sd_id" property="id" />
+        <result column="sd_session_id" property="sessionId" />
+        <result column="sd_touch_date" property="touchDate" />
+    </resultMap>
+    
+    <sql id="all-fields">
+        sd_id,
+        sd_session_id,
+        sd_touch_date
+    </sql>
+    
+    <select id="selectBySessionId" parameterClass="string" resultMap="SessionDescriptorResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM session_descriptor
+        WHERE sd_session_id = #sessionId#
+    </select>
+  
+    <insert id="insert" parameterClass="SessionDescriptor">
+        <selectKey keyProperty="id" resultClass="int">
+            SELECT nextVal('session_descriptor_sd_id_seq')
+        </selectKey>
+        INSERT INTO session_descriptor (
+            <include refid="all-fields" />
+        ) VALUES (
+            #id#,
+            #sessionId#,
+            #touchDate#
+        )
+    </insert>
+    
+    <update id="touch" parameterClass="java.util.Map">
+        UPDATE session_descriptor SET
+            sd_touch_date = #touchDate#
+        WHERE sd_session_id = #sessionId#
+    </update>
+
+</sqlMap>

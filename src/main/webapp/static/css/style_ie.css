@@ -1,0 +1,9 @@
+:focus {
+    outline: 0;
+}
+
+.dropshadow {
+    left: -10px;
+    top: -5px;
+    filter: progid:DXImageTransform.Microsoft.Blur(pixelradius=9, enabled="true");
+}

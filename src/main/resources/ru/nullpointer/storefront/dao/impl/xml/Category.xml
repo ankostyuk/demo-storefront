@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Category">
+    <resultMap id="CategoryResultMap" class="Category">
+        <result column="cat_id" property="id" />
+        <result column="cat_unit_id" property="unitId" />
+        <result column="cat_psd_id" property="parameterSetDescriptorId" />
+    </resultMap>
+    
+    <sql id="all-fields">
+        cat_id,
+        cat_unit_id,
+        cat_psd_id
+    </sql>
+    
+    <select id="selectById" parameterClass="int" resultMap="CategoryResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM category
+        WHERE cat_id = #id#
+    </select>
+  
+    <select id="selectMapByIdSet" parameterClass="java.util.List" resultMap="CategoryResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM category
+        WHERE cat_id IN 
+        <iterate open="(" close=")" conjunction=",">
+            #[]#
+        </iterate>
+    </select>
+    
+    <select id="selectAll" resultMap="CategoryResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM category
+        ORDER BY cat_id
+    </select>
+  
+    <insert id="insert" parameterClass="Category">
+        INSERT INTO category (
+            <include refid="all-fields" />
+        ) VALUES (
+            #id#,
+            #unitId#,
+            #parameterSetDescriptorId#
+        )
+    </insert>
+    
+    <update id="updateInfo" parameterClass="Category">
+        UPDATE category SET
+            cat_unit_id = #unitId#
+        WHERE cat_id = #id#
+    </update>
+    
+    <delete id="delete" parameterClass="int">
+        DELETE FROM category
+        WHERE cat_id = #id#
+    </delete>
+    
+    <update id="updateParameterSetDescriptor" parameterClass="Category">
+        UPDATE category SET
+            cat_psd_id = #parameterSetDescriptorId#
+        WHERE cat_id = #id#
+    </update>
+    
+    <select id="selectByParamSetDescriptorId" parameterClass="int" resultMap="CategoryResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM category
+        WHERE cat_psd_id = #psdId#
+    </select>
+  
+</sqlMap>

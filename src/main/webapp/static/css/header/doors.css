@@ -1,0 +1,24 @@
+/* Параметры шкуры */
+body {
+    background: url("../i/header/doors.png") no-repeat 140px 0 #fff; 
+}
+
+#navbar a {
+    color: #fffacf;
+}
+#navbar a:hover {
+    color: #010101;
+}
+
+#searchbar .options .text {
+    color: #ffffff;
+    background: url('../i/semi-black.png') repeat;
+}
+#searchbar .options a {
+    color: #fffacf;
+}
+#searchbar .options a:hover {
+    color: #ffffff;
+}
+
+

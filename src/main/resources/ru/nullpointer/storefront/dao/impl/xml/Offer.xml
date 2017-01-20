@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Offer">
+    <resultMap id="OfferResultMap" class="Offer">
+        <result column="off_id" property="id" />
+        <result column="off_category_id" property="categoryId" />
+        <result column="off_company_id" property="companyId" />
+        <result column="off_name" property="name" />
+        <result column="off_description" property="description" />
+        <result column="off_brand_name" property="brandName" />
+        <result column="off_model_name" property="modelName" />
+        <result column="off_origin_country" property="originCountry" />
+        <result column="off_price" property="price" />
+        <result column="off_currency" property="currency" />
+        <result column="off_ratio" property="ratio" />
+        <result column="off_unit_price" property="unitPrice" />
+        <result column="off_actual_date" property="actualDate" />
+        <result column="off_active" property="active" />
+        <result column="off_available" property="available" />
+        <result column="off_delivery" property="delivery" />
+        <result column="off_create_date" property="createDate" />
+        <result column="off_edit_date" property="editDate" />
+        <result column="off_image" property="image" />
+        <result column="off_brand_id" property="brandId" />
+        <result column="off_param_set_id" property="paramSetId" />
+        <result column="off_model_id" property="modelId" />
+        <result column="off_param_description" property="paramDescription" />
+        <result column="off_status" property="status" />
+        <result column="off_moderator_id" property="moderatorId" />
+        <result column="off_moderation_start_date" property="moderationStartDate" />
+        <result column="off_moderation_end_date" property="moderationEndDate" />
+        <result column="off_rejection_mask" property="rejectionMask" />
+    </resultMap>
+    
+    <sql id="all-fields">
+        off_id,
+        off_category_id,
+        off_company_id,
+        off_name,
+        off_description,
+        off_brand_name,
+        off_model_name,
+        off_origin_country,
+        off_price,
+        off_currency,
+        off_ratio,
+        off_unit_price,
+        off_actual_date,
+        off_active,
+        off_available,
+        off_delivery,
+        off_create_date,
+        off_edit_date,
+        off_image,
+        off_brand_id,
+        off_param_set_id,
+        off_model_id,
+        off_param_description,
+        off_status,
+        off_moderator_id,
+        off_moderation_start_date,
+        off_moderation_end_date,
+        off_rejection_mask
+    </sql>
+
+    <sql id="company-showing-condition">
+        <dynamic prepend="AND">
+            <isEqual property="showing" compareValue="REJECTED">
+                off_status = 'REJECTED'::t_offer_status
+            </isEqual>
+            <isEqual property="showing" compareValue="INACTIVE">
+                NOT off_active
+            </isEqual>
+        </dynamic>
+    </sql>
+
+    <select id="countByCategoryId" parameterClass="int" resultClass="int">
+        SELECT COUNT(*)
+        FROM offer
+        WHERE off_category_id = #categoryId#
+    </select>
+
+    <select id="countAccessibleByCategoryId" parameterClass="int" resultClass="int">
+        SELECT COUNT(*)
+        FROM offer
+        WHERE off_category_id = #categoryId#
+        AND <include refid="Common.offer-accessible-condition" />
+    </select>
+
+    <select id="countAccessibleModelByCategoryId" parameterClass="int" resultClass="int">
+        SELECT COUNT(*)
+        FROM offer
+        WHERE off_category_id = #categoryId# AND off_model_id IS NOT NULL
+        AND <include refid="Common.offer-accessible-condition" />
+    </select>
+
+    <select id="selectPaginatedByCategoryId" parameterClass="java.util.Map" resultMap="OfferResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM offer
+        WHERE off_category_id = #categoryId#
+        ORDER BY off_id
+        OFFSET #offset# LIMIT #limit#
+    </select>
+
+    <select id="selectPriceInterval" parameterClass="int" resultClass="java.util.HashMap">
+        SELECT MIN(off_unit_price) AS min, MAX(off_unit_price) AS max FROM offer
+        WHERE <include refid="Common.offer-accessible-condition" />
+    </select>
+
+    <select id="selectPriceIntervalByCategoryId" parameterClass="int" resultClass="java.util.HashMap">
+        SELECT MIN(off_unit_price) AS min, MAX(off_unit_price) AS max FROM offer
+        WHERE off_category_id = #categoryId#
+        AND <include refid="Common.offer-accessible-condition" />
+    </select>
+
+    <select id="selectPriceIntervalByModelId" parameterClass="int" resultClass="java.util.HashMap">
+        SELECT MIN(off_unit_price) AS min, MAX(off_unit_price) AS max FROM offer
+        WHERE off_model_id = #modelId#
+        AND <include refid="Common.offer-accessible-condition" />
+    </select>
+
+    <select id="selectByCompanyId" parameterClass="java.util.Map" resultMap="OfferResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM offer
+        WHERE off_company_id = #companyId#
+        <include refid="company-showing-condition" />
+        <isNotNull property="categoryIdList">
+            AND off_category_id IN
+            <iterate open="(" close=")" conjunction="," property="categoryIdList">
+                #categoryIdList[]#
+            </iterate>
+        </isNotNull>
+        ORDER BY
+        <dynamic>
+            <isEqual property="sorting" compareValue="NAME">
+                off_name ASC
+            </isEqual>
+            <isEqual property="sorting" compareValue="DATE_CREATED_ASCENDING">
+                off_create_date ASC,
+            </isEqual>
+            <isEqual property="sorting" compareValue="DATE_CREATED_DESCENDING">
+                off_create_date DESC,
+            </isEqual>
+            <isEqual property="sorting" compareValue="DATE_EDITED_ASCENDING">
+                off_edit_date ASC,
+            </isEqual>
+            <isEqual property="sorting" compareValue="DATE_EDITED_DESCENDING">
+                off_edit_date DESC,
+            </isEqual>
+            <!-- второй параметр сортировки - наименование -->
+            <isNotEqual property="sorting" compareValue="NAME">
+                off_name ASC
+            </isNotEqual>
+        </dynamic>
+        OFFSET #offset# LIMIT #limit#
+    </select>
+    
+    <select id="countByCompanyId" parameterClass="java.util.Map" resultClass="int">
+        SELECT COUNT(*)
+        FROM offer
+        WHERE off_company_id = #companyId#
+        <include refid="company-showing-condition" />
+        <isNotNull property="categoryIdList">
+            AND off_category_id IN
+            <iterate open="(" close=")" conjunction="," property="categoryIdList">
+                #categoryIdList[]#
+            </iterate>
+        </isNotNull>
+    </select>
+    
+    <select id="countMapByCompanyId" parameterClass="int" resultClass="java.util.HashMap">
+        SELECT
+            off_category_id as id,
+            COUNT(off_id)::integer as count
+        FROM offer
+        WHERE off_company_id = #companyId#
+        GROUP BY off_category_id;
+    </select>
+
+    <select id="countPendingMapByModeratorId" parameterClass="int" resultClass="java.util.HashMap">
+        SELECT
+            off_category_id as id,
+            COUNT(off_id)::integer as count
+        FROM offer
+        WHERE off_moderator_id = #moderatorId#
+        AND off_status = 'PENDING'::t_offer_status
+        GROUP BY off_category_id;
+    </select>
+
+    <select id="selectByModeratorId" parameterClass="java.util.Map" resultMap="OfferResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM offer
+        WHERE off_moderator_id = #moderatorId#
+        AND off_category_id = #categoryId#
+        <isEqual property="pendingOnly" compareValue="true">
+            AND off_status = 'PENDING'::t_offer_status
+        </isEqual>
+        <isEqual property="windowConfig.forward" compareValue="true">
+            <isNotNull property="windowConfig.startDate">
+                AND (off_moderation_start_date &gt; #windowConfig.startDate#
+                    <isNotNull property="windowConfig.startId">
+                        OR (off_moderation_start_date = #windowConfig.startDate# AND off_id &gt; #windowConfig.startId#)
+                    </isNotNull>
+                )
+            </isNotNull>
+        </isEqual>
+        <isEqual property="windowConfig.forward" compareValue="false">
+            <isNotNull property="windowConfig.startDate">
+                AND (off_moderation_start_date &lt; #windowConfig.startDate#
+                    <isNotNull property="windowConfig.startId">
+                        OR (off_moderation_start_date = #windowConfig.startDate# AND off_id &lt; #windowConfig.startId#)
+                    </isNotNull>
+                )
+            </isNotNull>
+        </isEqual>
+        ORDER BY off_moderation_start_date ASC, off_id ASC
+        LIMIT #windowConfig.limit#
+    </select>
+
+    <select id="selectById" parameterClass="int" resultMap="OfferResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM offer
+        WHERE off_id = #id#
+    </select>
+
+    <select id="selectMapByIdSet" parameterClass="java.util.List" resultMap="OfferResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM offer
+        WHERE off_id IN
+        <iterate open="(" close=")" conjunction=",">
+            #[]#
+        </iterate>
+    </select>
+
+    <select id="selectUnlinkedBrandNames" resultClass="StringCount">
+        SELECT DISTINCT(off_brand_name) AS value, COUNT(off_id) AS count
+        FROM offer WHERE
+            off_brand_name &lt;&gt; ''
+            AND off_brand_id IS NULL
+        GROUP BY (off_brand_name)
+        ORDER BY count DESC, off_brand_name ASC
+    </select>
+
+    <insert id="insert" parameterClass="Offer">
+        <selectKey keyProperty="id" resultClass="int">
+            SELECT nextVal('offer_off_id_seq')
+        </selectKey>
+        INSERT INTO offer (
+            <include refid="all-fields" />
+        ) VALUES (
+            #id#,
+            #categoryId#,
+            #companyId#,
+            #name#,
+            #description#,
+            #brandName#,
+            #modelName#,
+            #originCountry#,
+            #price#,
+            #currency#,
+            #ratio#,
+            #unitPrice#,
+            #actualDate#,
+            #active#,
+            #available#,
+            #delivery#,
+            #createDate#,
+            #editDate#,
+            #image#,
+            #brandId#,
+            #paramSetId#,
+            #modelId#,
+            #paramDescription#,
+            #status#::t_offer_status,
+            #moderatorId#,
+            #moderationStartDate#,
+            #moderationEndDate#,
+            #rejectionMask#
+        )
+    </insert>
+
+    <update id="updateInfo" parameterClass="Offer">
+        UPDATE offer SET
+            off_name = #name#,
+            off_description = #description#,
+            off_brand_name = #brandName#,
+            off_model_name = #modelName#,
+            off_origin_country = #originCountry#,
+            off_price = #price#,
+            off_currency = #currency#,
+            off_ratio = #ratio#,
+            off_unit_price = #unitPrice#,
+            off_actual_date = #actualDate#,
+            off_active = #active#,
+            off_available = #available#,
+            off_delivery = #delivery#,
+            off_create_date = #createDate#,
+            off_edit_date = #editDate#,
+            off_image = #image#,
+            off_brand_id = #brandId#,
+            off_param_set_id = #paramSetId#,
+            off_model_id = #modelId#,
+            off_param_description = #paramDescription#,
+            off_status = #status#::t_offer_status,
+            off_moderator_id = #moderatorId#,
+            off_moderation_start_date = #moderationStartDate#,
+            off_moderation_end_date = #moderationEndDate#,
+            off_rejection_mask = #rejectionMask#
+        WHERE off_id = #id#
+    </update>
+    
+    <delete id="delete" parameterClass="Offer">
+        DELETE FROM offer WHERE off_id = #id#
+    </delete>
+
+    <!--
+        + priceCurrency
+        + defaultCurrency
+        * offerId
+        * companyId
+    -->
+    <update id="updateOffersUnitPrice" parameterClass="java.util.Map">
+        UPDATE offer SET
+            off_unit_price = 
+            (
+                SELECT 
+                CASE
+                    /* фиксированный курс */
+                    WHEN ec_fixed_rate IS NOT NULL
+                    THEN off_price * ec_fixed_rate / cr_from_rate / off_ratio
+                    /* по курсу банка с процентом */
+                    WHEN ec_percent IS NOT NULL AND ec_percent &lt;&gt; 0
+                    THEN (100.0 + ec_percent) / 100.0 * off_price * cr_to_rate / cr_from_rate / off_ratio
+                    /* просто по курсу банка */
+                    ELSE 
+                    off_price * cr_to_rate / cr_from_rate / off_ratio
+                END
+                FROM currency_rate
+                LEFT JOIN extra_currency ON (ec_currency = off_currency AND ec_company_id = off_company_id)
+                /* из валюты предложения в основную валюту */
+                WHERE cr_from_currency = #priceCurrency# AND cr_to_currency = #defaultCurrency#
+            ) 
+        WHERE off_currency = #priceCurrency#
+        <isNotNull property="offerId">
+            AND off_id = #offerId#
+        </isNotNull>
+        <isNotNull property="companyId">
+            AND off_company_id = #companyId#
+        </isNotNull>
+    </update>
+
+    <update id="removeParamSetRefs" parameterClass="int">
+        UPDATE offer SET
+            off_param_set_id = NULL
+        WHERE off_category_id = #id#
+    </update>
+
+    <!--
+        Распределяет id из списка равномерно по методу round-robin.
+        Текущий id определяется как остаток от деления id прделожения
+        на размер списка
+    -->
+    <update id="setModeratorRefs" parameterClass="java.util.Map">
+        UPDATE offer SET
+            <isNotNull property="idList">
+                off_moderator_id = (
+                    SELECT * FROM
+                    <iterate open="(VALUES " close=")" conjunction="," property="idList">
+                        ( #idList[]# )
+                    </iterate>
+                    AS moderator_id
+                    OFFSET off_id % #idListSize#
+                    LIMIT 1
+                )
+            </isNotNull>
+            <isNull property="idList">
+                off_moderator_id = NULL
+            </isNull>
+        WHERE
+        <isNotNull property="currentId">
+            off_moderator_id = #currentId#
+        </isNotNull>
+        <isNull property="currentId">
+            off_moderator_id IS NULL
+        </isNull>
+    </update>
+
+    <update id="deactivateByActualDate" parameterClass="java.util.Date">
+        UPDATE offer SET
+            off_active = FALSE
+        WHERE off_active AND off_actual_date &lt; #actualDate#
+    </update>
+
+    <update id="setBrandByName" parameterClass="java.util.Map">
+        UPDATE offer SET
+            off_brand_id = #brandId#
+        WHERE
+        off_brand_name = #brandName#
+        AND off_brand_id IS NULL
+    </update>
+    
+</sqlMap>

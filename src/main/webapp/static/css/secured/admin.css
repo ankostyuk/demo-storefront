@@ -1,0 +1,67 @@
+#header.admin {
+    border-bottom:1px solid #000;
+    background: #55B9B7;
+}
+#footer.admin {
+    border-top: 1px solid #000;
+    background: #ACC160;
+}
+
+#nav {
+    margin-top: 45px;
+}
+#nav ul {
+    list-style-type: none;
+    padding-left: 1em;
+}
+#nav li {
+    display: inline;
+    padding: 5px;
+}
+#nav .active {
+    background-color: #EEE;
+}
+
+table.accounts {
+    margin: 1em 0 1em 0;
+    text-align: left;
+}
+table.accounts th {
+    padding: 0.25em 0.5em 0.25em 0.5em;
+    border-bottom: 1px solid #EEE;
+}
+table.accounts td {
+    padding: 0.25em 0.5em 0.25em 0.5em;
+    vertical-align: top;
+    border-bottom: 1px solid #EEE;
+}
+table.accounts tr.odd {
+    background-color: #F5F5F5;
+}
+table.accounts tr.even {
+}
+table.accounts .me {
+    color: #AAA;
+}
+
+table.company {
+    margin-top: 0;
+}
+
+.search-box {
+    margin: 1em 0;
+}
+
+table.reg-count {
+    border-collapse: collapse;
+}
+table.reg-count td {
+    border-bottom: 1px solid #EEE;
+}
+table.reg-count td.label {
+    padding: 0 3em 0 0;
+}
+table.reg-count td.count {
+    padding: 0 0.5em 0 0;
+    text-align: right;
+}

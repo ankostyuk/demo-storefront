@@ -1,0 +1,21 @@
+/* Параметры шкуры */
+body {
+    background: url("../i/header/term.png") no-repeat 50px 0 #fff; 
+}
+
+#navbar a {
+    color: #fffacf;
+}
+#navbar a:hover {
+    color: #010101;
+}
+
+#searchbar .options .text {
+    color: #ffffff;
+}
+#searchbar .options a {
+    color: #fffacf;
+}
+#searchbar .options a:hover {
+    color: #010101;
+}

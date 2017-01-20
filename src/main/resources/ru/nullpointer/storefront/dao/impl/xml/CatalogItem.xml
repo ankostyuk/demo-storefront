@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="CatalogItem">
+    <resultMap id="CatalogItemResultMap" class="CatalogItem">
+        <result column="ci_id" property="id" />
+        <result column="ci_name" property="name" />
+        <result column="ci_theme" property="theme" />
+        <result column="ci_path" property="path" />
+        <result column="ci_type" property="type" />
+        <result column="ci_active" property="active" />
+    </resultMap>
+    
+    <sql id="all-fields">
+        ci_id,
+        ci_name,
+        ci_theme,
+        ci_path,
+        ci_type,
+        ci_active
+    </sql>
+    
+    <select id="selectChildrenBySectionId" parameterClass="java.util.Map" resultMap="CatalogItemResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM catalog_item
+        WHERE ci_path LIKE
+        <isNotNull property="sectionId">
+            (SELECT ci_path FROM catalog_item WHERE ci_id = #sectionId# AND ci_type = 'SECTION') || '__'
+        </isNotNull>
+        <isNull property="sectionId">
+            '__'
+        </isNull>
+        <isNotNull property="onlyActive">
+            AND ci_active
+        </isNotNull>
+        ORDER BY ci_path
+    </select>
+    
+    <select id="selectSubTreeBySectionId" parameterClass="int" resultMap="CatalogItemResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM catalog_item
+        <isParameterPresent>
+        WHERE ci_path LIKE
+            (SELECT ci_path FROM catalog_item WHERE ci_id = #sectionId# AND ci_type = 'SECTION') || '__%'
+        </isParameterPresent>
+        ORDER BY ci_path
+    </select>
+    
+    <update id="updateItemPath" parameterClass="CatalogItem">
+        UPDATE catalog_item SET
+            ci_path = #path#
+        WHERE ci_id = #id#
+    </update>
+    
+    <select id="selectPopularCategoriesBySectionId" parameterClass="int" resultMap="CatalogItemResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM catalog_item
+        WHERE ci_type = 'CATEGORY'
+        AND ci_active
+        AND ci_path LIKE
+            (SELECT ci_path FROM catalog_item WHERE ci_id = #sectionId# AND ci_type = 'SECTION') || '%'
+        ORDER BY SUBSTRING(ci_path FROM LENGTH(ci_path) - 1 FOR 2), ci_path
+        LIMIT 10
+    </select>
+        
+    <select id="selectById" parameterClass="int" resultMap="CatalogItemResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM catalog_item
+        WHERE ci_id = #id#
+    </select>
+    
+    <select id="selectPath" parameterClass="java.util.List" resultMap="CatalogItemResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM catalog_item
+        WHERE ci_path IN 
+        <iterate open="(" close=")" conjunction=",">
+            #[]#
+        </iterate>
+        ORDER BY ci_path
+    </select>
+    
+    <insert id="insert" parameterClass="CatalogItem">
+        <selectKey keyProperty="id" resultClass="int">
+            SELECT nextVal('catalog_item_ci_id_seq')
+        </selectKey>
+        INSERT INTO catalog_item (
+            <include refid="all-fields" />
+        ) VALUES (
+            #id#,
+            #name#,
+            #theme#,
+            #path#,
+            #type#::t_catalog_item_type,
+            #active#
+        )
+    </insert>
+    
+    <delete id="delete" parameterClass="int">
+        DELETE FROM catalog_item
+        WHERE ci_id = #id#
+    </delete>
+    
+    <update id="updateInfo" parameterClass="CatalogItem">
+        UPDATE catalog_item SET
+            ci_name = #name#,
+            ci_theme = #theme#
+        WHERE ci_id = #id#
+    </update>
+    
+    <update id="updateItemActive" parameterClass="CatalogItem">
+        UPDATE catalog_item SET
+            ci_active = #active#
+        WHERE ci_id = #id#
+    </update>
+    
+    <update id="updateSectionTreeActive" parameterClass="CatalogItem">
+        UPDATE catalog_item SET
+            ci_active = #active#
+        WHERE ci_path LIKE
+            (SELECT ci_path FROM catalog_item WHERE ci_id = #id# AND ci_type = 'SECTION') || '%'
+    </update>
+    
+    <select id="selectByPath" parameterClass="java.lang.String" resultMap="CatalogItemResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM catalog_item
+        WHERE ci_path = #path#
+    </select>
+    
+    <select id="countActive" resultClass="int">
+        SELECT COUNT(*)
+        FROM catalog_item
+        WHERE ci_active
+    </select>
+
+    <select id="selectActiveByBrandId" parameterClass="int" resultMap="CatalogItemResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM catalog_item
+        WHERE ci_type = 'CATEGORY'
+        AND ci_active
+        AND ci_id in (
+            SELECT DISTINCT off_category_id FROM offer
+            WHERE off_brand_id = #brandId#
+            AND <include refid="Common.offer-accessible-condition" />
+        )
+        ORDER BY ci_path
+    </select>
+
+    <select id="selectActiveByCompanyId" parameterClass="int" resultMap="CatalogItemResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM catalog_item
+        WHERE ci_type = 'CATEGORY'
+        AND ci_active
+        AND ci_id in (
+            SELECT DISTINCT off_category_id FROM offer
+            WHERE off_company_id = #companyId#
+            AND <include refid="Common.offer-accessible-condition" />
+        )
+        ORDER BY ci_path
+    </select>
+
+</sqlMap>

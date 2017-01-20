@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Term">
+    <resultMap id="TermResultMap" class="Term">
+        <result column="term_id" property="id" />
+        <result column="term_name" property="name" />
+        <result column="term_description" property="description" />
+        <result column="term_source" property="source" />
+    </resultMap>
+    
+    <sql id="all-fields">
+        term_id,
+        term_name,
+        term_description,
+        term_source
+    </sql>
+
+    <select id="count" resultClass="int">
+        SELECT COUNT(*)
+        FROM term
+    </select>
+
+    <select id="selectById" parameterClass="int" resultMap="TermResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM term
+        WHERE term_id = #id#
+    </select>
+
+    <select id="selectList" resultMap="TermResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM term
+    </select>
+
+    <select id="selectPrefixList" resultClass="string">
+        SELECT DISTINCT
+            UPPER(SUBSTRING(term_name FROM 1 FOR 1)) AS prefix
+        FROM term
+    </select>
+
+    <select id="selectListByPrefix" resultMap="TermResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM term
+        WHERE LOWER(term_name) LIKE LOWER(#prefix#) || '%'
+        ORDER BY LOWER(term_name) ASC
+    </select>
+
+    <select id="selectListByDigitPrefix" resultMap="TermResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM term
+        WHERE term_name SIMILAR TO '[0-9]%'
+        ORDER BY LOWER(term_name) ASC
+    </select>
+
+    <insert id="insert" parameterClass="Term">
+        <selectKey keyProperty="id" resultClass="int">
+            SELECT nextVal('term_term_id_seq')
+        </selectKey>
+        INSERT INTO term (
+            <include refid="all-fields" />
+        ) VALUES (
+            #id#,
+            #name#,
+            #description#,
+            #source#
+        )
+    </insert>
+    
+    <update id="updateInfo" parameterClass="Term">
+        UPDATE term SET
+            term_name = #name#,
+            term_description = #description#,
+            term_source = #source#
+        WHERE term_id = #id#
+    </update>
+    
+    <delete id="delete" parameterClass="int">
+        DELETE FROM term
+        WHERE term_id = #id#
+    </delete>
+    
+</sqlMap>

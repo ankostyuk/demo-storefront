@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Brand">
+    <resultMap id="BrandResultMap" class="Brand">
+        <result column="br_id" property="id" />
+        <result column="br_name" property="name" />
+        <result column="br_keywords" property="keywords" />
+        <result column="br_site" property="site" />
+        <result column="br_logo" property="logo" />
+    </resultMap>
+    
+    <sql id="all-fields">
+        br_id,
+        br_name,
+        br_keywords,
+        br_site,
+        br_logo
+    </sql>
+
+    <select id="count" resultClass="int">
+        SELECT COUNT(*)
+        FROM brand
+    </select>
+
+    <select id="selectList" resultMap="BrandResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM brand
+    </select>
+
+    <select id="selectPrefixList" resultClass="string">
+        SELECT DISTINCT
+            SUBSTRING(br_name FROM 1 FOR 1) AS prefix
+        FROM brand
+    </select>
+
+    <select id="selectById" parameterClass="int" resultMap="BrandResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM brand
+        WHERE br_id = #id#
+    </select>
+
+    <select id="selectMapByIdSet" parameterClass="java.util.List" resultMap="BrandResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM brand
+        WHERE br_id IN
+        <iterate open="(" close=")" conjunction=",">
+            #[]#
+        </iterate>
+    </select>
+
+    <select id="selectByIdSet" parameterClass="java.util.List" resultMap="BrandResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM brand
+        WHERE br_id IN
+        <iterate open="(" close=")" conjunction=",">
+            #[]#
+        </iterate>
+        ORDER BY br_name
+    </select>
+
+    <select id="findByText" parameterClass="java.util.Map" resultMap="BrandResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM brand
+        WHERE LOWER(br_name) LIKE '%' || LOWER(#text#) || '%'
+        OR LOWER(br_keywords) LIKE '%' || LOWER(#text#) || '%'
+        ORDER BY br_name ASC
+        LIMIT #limit#
+    </select>
+
+    <select id="selectByCategoryId" parameterClass="int" resultMap="BrandResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM brand
+        WHERE br_id in (
+            SELECT DISTINCT off_brand_id FROM offer
+            WHERE off_category_id = #categoryId#
+            AND <include refid="Common.offer-accessible-condition" />
+        )
+        ORDER BY br_name
+    </select>
+
+    <select id="selectIntersectionBrandCategory" parameterClass="java.util.Map" resultMap="BrandResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM brand
+        WHERE br_id IN
+        <iterate open="(" close=")" conjunction="," property="brandIdList">
+            #brandIdList[]#
+        </iterate>
+        AND br_id in (
+            SELECT DISTINCT off_brand_id FROM offer
+            WHERE off_category_id IN
+            <iterate open="(" close=")" conjunction="," property="categoryIdList">
+                #categoryIdList[]#
+            </iterate>
+            AND <include refid="Common.offer-accessible-condition" />
+        )
+        ORDER BY br_name
+    </select>
+
+    <insert id="insert" parameterClass="Brand">
+        <selectKey keyProperty="id" resultClass="int">
+            SELECT nextVal('brand_br_id_seq')
+        </selectKey>
+        INSERT INTO brand (
+            <include refid="all-fields" />
+        ) VALUES (
+            #id#,
+            #name#,
+            #keywords#,
+            #site#,
+            #logo#
+        )
+    </insert>
+    
+    <update id="updateInfo" parameterClass="Brand">
+        UPDATE brand SET
+            br_name = #name#,
+            br_keywords = #keywords#,
+            br_site = #site#,
+            br_logo = #logo#
+        WHERE br_id = #id#
+    </update>
+    
+    <delete id="delete" parameterClass="int">
+        DELETE FROM brand
+        WHERE br_id = #id#
+    </delete>
+    
+</sqlMap>

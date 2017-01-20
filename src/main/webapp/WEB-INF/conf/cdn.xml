@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdn>
+    <container name="css" class="ru.nullpointer.cdn.tags.SimpleContainer">
+        <property name="prefix" value="static/css/" />
+        <property name="context" value="true" />
+    </container>
+
+    <container name="js" class="ru.nullpointer.cdn.tags.SimpleContainer">
+        <property name="prefix" value="static/js/" />
+        <property name="context" value="true" />
+    </container>
+
+    <container name="img" class="ru.nullpointer.cdn.tags.SimpleContainer">
+        <property name="prefix" value="static/img/" />
+        <property name="context" value="true" />
+    </container>
+
+    <!-- Изображения предложения -->
+    <container name="offer_mini" class="ru.nullpointer.cdn.tags.SimpleContainer">
+        <property name="prefix" value="i/offer/mini/" />
+        <property name="suffix" value=".png" />
+        <property name="context" value="true" />
+    </container>
+
+    <container name="offer" class="ru.nullpointer.cdn.tags.SimpleContainer">
+        <property name="prefix" value="i/offer/" />
+        <property name="suffix" value=".png" />
+        <property name="context" value="true" />
+    </container>
+
+    <container name="offer_large" class="ru.nullpointer.cdn.tags.SimpleContainer">
+        <property name="prefix" value="i/offer/large/" />
+        <property name="suffix" value=".png" />
+        <property name="context" value="true" />
+    </container>
+
+    <!-- Изображения бренда -->
+    <container name="brand" class="ru.nullpointer.cdn.tags.SimpleContainer">
+        <property name="prefix" value="i/brand/" />
+        <property name="suffix" value=".png" />
+        <property name="context" value="true" />
+    </container>
+
+    <!-- Изображения модели -->
+    <container name="model_mini" class="ru.nullpointer.cdn.tags.SimpleContainer">
+        <property name="prefix" value="i/model/mini/" />
+        <property name="suffix" value=".png" />
+        <property name="context" value="true" />
+    </container>
+
+    <container name="model" class="ru.nullpointer.cdn.tags.SimpleContainer">
+        <property name="prefix" value="i/model/" />
+        <property name="suffix" value=".png" />
+        <property name="context" value="true" />
+    </container>
+
+    <container name="model_large" class="ru.nullpointer.cdn.tags.SimpleContainer">
+        <property name="prefix" value="i/model/large/" />
+        <property name="suffix" value=".png" />
+        <property name="context" value="true" />
+    </container>
+
+    <!-- Изображения поставщика -->
+    <container name="company" class="ru.nullpointer.cdn.tags.SimpleContainer">
+        <property name="prefix" value="i/company/" />
+        <property name="suffix" value=".png" />
+        <property name="context" value="true" />
+    </container>
+    
+</cdn>

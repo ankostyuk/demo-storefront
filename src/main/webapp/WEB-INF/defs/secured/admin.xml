@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+"-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+"http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+    <definition name="secured-admin-common" template="/WEB-INF/jsp/template/secured/admin/common.jsp">
+        <put-attribute name="header" value="/WEB-INF/jsp/template/secured/admin/header.jsp" />
+        <put-attribute name="key" value="" />
+        <put-attribute name="metadata.title" value="" />
+        <put-attribute name="metadata.description" value="" />
+        <put-attribute name="metadata.keywords" value="" />
+        <put-attribute name="footer" value="/WEB-INF/jsp/template/secured/admin/footer.jsp" />
+        <put-list-attribute name="cssList">
+            <add-attribute value="${main.css}" />
+            <add-attribute value="${secured/admin.css}" />
+        </put-list-attribute>
+        <put-list-attribute name="scriptList" />
+    </definition>
+
+    <definition name="secured/admin" extends="secured-admin-common">
+        <put-attribute name="metadata.title" value="Раздел администратора" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/admin.jsp" />
+    </definition>
+
+    <!-- Поставщики -->
+    <definition name="secured/admin/account/company" extends="secured-admin-common">
+        <put-attribute name="metadata.title" value="Поставщики" />
+        <put-attribute name="key" value="account/company" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/admin/account/company.jsp" />
+    </definition>
+
+    <definition name="secured/admin/account/company/edit" extends="secured-admin-common">
+        <put-attribute name="metadata.title" value="Редактирование аккаунта поставщика" />
+        <put-attribute name="key" value="account/company" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/admin/account/company/edit.jsp" />
+    </definition>
+
+    <!-- Менеджеры -->
+    <definition name="secured/admin/account/manager" extends="secured-admin-common">
+        <put-attribute name="metadata.title" value="Менеджеры" />
+        <put-attribute name="key" value="account/manager" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/admin/account/manager.jsp" />
+    </definition>
+
+    <definition name="secured/admin/account/manager/add" extends="secured-admin-common">
+        <put-attribute name="metadata.title" value="Добавление аккаунта менеджера" />
+        <put-attribute name="key" value="account/manager" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/admin/account/manager/add.jsp" />
+    </definition>
+
+    <definition name="secured/admin/account/manager/edit" extends="secured-admin-common">
+        <put-attribute name="metadata.title" value="Редактирование аккаунта менеджера" />
+        <put-attribute name="key" value="account/manager" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/admin/account/manager/edit.jsp" />
+    </definition>
+
+    <definition name="secured/admin/account/manager/delete" extends="secured-admin-common">
+        <put-attribute name="metadata.title" value="Удаление аккаунта менеджера" />
+        <put-attribute name="key" value="account/manager" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/admin/account/manager/delete.jsp" />
+    </definition>
+
+    <!-- Администраторы -->
+    <definition name="secured/admin/account/admin" extends="secured-admin-common">
+        <put-attribute name="metadata.title" value="Администраторы" />
+        <put-attribute name="key" value="account/admin" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/admin/account/admin.jsp" />
+    </definition>
+
+    <definition name="secured/admin/account/admin/add" extends="secured-admin-common">
+        <put-attribute name="metadata.title" value="Добавление аккаунта администратора" />
+        <put-attribute name="key" value="account/admin" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/admin/account/admin/add.jsp" />
+    </definition>
+
+    <definition name="secured/admin/account/admin/edit" extends="secured-admin-common">
+        <put-attribute name="metadata.title" value="Редактирование аккаунта администратора" />
+        <put-attribute name="key" value="account/admin" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/admin/account/admin/edit.jsp" />
+    </definition>
+
+    <definition name="secured/admin/account/admin/delete" extends="secured-admin-common">
+        <put-attribute name="metadata.title" value="Удаление аккаунта администратора" />
+        <put-attribute name="key" value="account/admin" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/admin/account/admin/delete.jsp" />
+    </definition>
+
+    <!-- Статистика -->
+    <definition name="secured/admin/statistics" extends="secured-admin-common">
+        <put-attribute name="metadata.title" value="Статистика" />
+        <put-attribute name="key" value="statistics" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/admin/statistics.jsp" />
+    </definition>
+    
+    <!-- Поисковая индексация -->
+    <definition name="secured/admin/searchindexing" extends="secured-admin-common">
+        <put-attribute name="metadata.title" value="Поисковая индексация" />
+        <put-attribute name="key" value="searchindexing" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/admin/searchindexing.jsp" />
+    </definition>
+
+</tiles-definitions>

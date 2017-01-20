@@ -1,0 +1,54 @@
+
+package ru.nullpointer.storefront.web.secured.admin.account.manager;
+
+import javax.annotation.Resource;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import ru.nullpointer.storefront.domain.Account;
+import ru.nullpointer.storefront.service.RegistrationService;
+import ru.nullpointer.storefront.web.exception.NotFoundException;
+
+/**
+ *
+ * @author Alexander Yastrebov
+ */
+@Controller
+@RequestMapping("/secured/admin/account/manager/delete/{id}")
+public class DeleteManagerAccountController {
+
+    @Resource
+    private RegistrationService registrationService;
+
+    @ModelAttribute("account")
+    public Account getAccount(@PathVariable("id") Integer id) {
+        Account account = registrationService.getAccountById(id);
+        if (account == null) {
+            throw new NotFoundException();
+        }
+        return account;
+    }
+
+    @InitBinder("account")
+    public void initBinder(WebDataBinder binder) {
+        binder.setDisallowedFields("id");
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public String handleGet() {
+        return "secured/admin/account/manager/delete";
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public String handlePost(@PathVariable("id") Integer id) {
+
+        registrationService.deleteManager(id);
+
+        return "redirect:/secured/admin/account/manager";
+    }
+
+}

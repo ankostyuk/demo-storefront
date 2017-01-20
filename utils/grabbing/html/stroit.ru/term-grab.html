@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title></title>
+	<meta name="title" content="" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+    <script type="text/javascript" src="../../../html/static/js/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="../../../html/static/js/jquery.xdomainajax-0.11-k1.js"></script>
+    <style type="text/css">
+        #action-box a {
+            display: inline-block;
+            margin-right: 20px;
+        }
+        #sql-container {
+            width: 100%;
+            border: 1px solid black;
+            margin-top: 20px;
+            padding: 0 10px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!--<div id="grab-container" style="width: 100%; height: 200px; border: 1px solid black; overflow: scroll;">
+    </div>-->
+
+    <div id="action-box">
+        <a id="start-grub" href="#">Старт</a>
+        <a id="stop-grub" href="#">Стоп</a>
+    </div>
+
+    <div id="sql-container">
+        <code>
+            /* Термины */<br/>
+            INSERT INTO term(term_name, term_description, term_source) VALUES<br/>
+            <span id="rows-box"></span>
+            ;<br/>
+            /* Количество терминов: <span id="term-count"></span> */<br/>
+        </code>
+    </div>
+
+<script type="text/javascript">
+// <![CDATA[
+    $(document).ready(function(){//return;
+        //var grabContainer = $("#grab-container");
+
+        var doc = $(document);
+
+        var rowsBox = $("#rows-box");
+        var termCountBox = $("#term-count");
+
+        var pageStartNumber = 192;
+        var pageFinishNumber = 225;//225;
+
+        var pageNumber = pageStartNumber;
+        var termCount = 0;
+
+        $("#start-grub").click(function(){
+            if (!doc.data("GRUB")) {
+                rowsBox.empty();
+                termCountBox.empty();
+                pageNumber = pageStartNumber;
+                termCount = 0;
+                doc.data("GRUB", true);
+                grab(pageNumber);
+            }
+        });
+        $("#stop-grub").click(function(){
+            doc.data("GRUB", false);
+        });
+
+        function grab(pageNumber) {
+            $.ajax({
+                url: "http://dictionary.stroit.ru/p-" + pageNumber + ".html",
+                charset: "windows-1251",
+                //url: "http://int-projects.ru/",
+                //charset: "utf-8",
+                type: "GET",
+                success: function(result) {
+                    //console.log(result);
+
+                    // @Deprecated
+                    //rowsBox.append("<p style='background-color: #f0f0f0;'><strong>" + pageNumber + "</strong></p>");
+
+                    //var term_source = "<p style='color: #808080;'>stroit.ru</p>";
+
+                    var count = 0;
+
+                    var row = ""; // ('ДСП', 'Древесно-стружечная плита (ДСтП, ДСП)', 'stroit.ru'),
+
+                    var html = $(result.responseText).find("#rightcolumn_strings > *").each(function(){
+                        var el = $(this);
+                        
+                        if (el.is("h2")) {
+                            //var term_name = "<p><strong>" + el.text() + "</strong></p>";
+                            //rowsBox.append(term_name);
+
+                            row = "('{term_name}', '{term_description}', 'stroit.ru'),<br/>";
+                            row = row.replace("{term_name}", $.trim(el.text()));
+                        } else
+                        if (el.is("h2 + p")) {
+                            //var term_description = "<p>" + el.text() + "</p>";
+                            //rowsBox.append(term_description);
+                            //rowsBox.append(term_source);
+
+                            row = row.replace("{term_description}", $.trim(el.text()));
+                            rowsBox.append(row);
+
+                            termCount++;
+                            count++;
+                        }
+                        // @Deprecated
+                        if (count != 0 && count%3 == 0) {
+                            //return false;
+                        }
+                    });
+                    //grabContainer.append(html);
+
+                    termCountBox.text(termCount);
+
+                    // @Deprecated
+                    //rowsBox.append("<hr>");
+
+                    if (++pageNumber <= pageFinishNumber && doc.data("GRUB")) {
+                        setTimeout(function(){
+                            grab(pageNumber);
+                        }, 2000 + 3000*Math.random());
+                    }
+                }
+            });
+        }
+
+    });
+// ]]>
+</script>
+
+</body>
+</html>

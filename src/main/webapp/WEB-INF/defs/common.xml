@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+"-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+"http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+    
+    <definition name="common-tree" template="/WEB-INF/jsp/template/common-tree.jsp" />
+    <definition name="common-alpha-toc-horizontal" template="/WEB-INF/jsp/template/common-alpha-toc-horizontal.jsp" />
+
+    <definition name="region-init" template="/WEB-INF/jsp/template/region-init.jsp" />
+    <definition name="region-path" template="/WEB-INF/jsp/template/region-path.jsp" />
+
+    <definition name="catalog-category-item-list" template="/WEB-INF/jsp/template/catalog-category-item-list.jsp" />
+    <definition name="catalog-item-list" template="/WEB-INF/jsp/template/catalog-item-list.jsp" />
+    <definition name="catalog-item-path" template="/WEB-INF/jsp/template/catalog-item-path.jsp" />
+    <definition name="catalog-item-path-plain" template="/WEB-INF/jsp/template/catalog-item-path-plain.jsp" />
+    <definition name="offer-model-catalog-item-path" template="/WEB-INF/jsp/template/offer-model-catalog-item-path.jsp" />
+
+    <definition name="matches" template="/WEB-INF/jsp/template/matches.jsp" />
+    <definition name="match-item-offer" template="/WEB-INF/jsp/template/match-item-offer.jsp" />
+    <definition name="match-item-model" template="/WEB-INF/jsp/template/match-item-model.jsp" />
+    <definition name="match-path" template="/WEB-INF/jsp/template/match-path.jsp" />
+
+    <definition name="match-filter" template="/WEB-INF/jsp/template/match-filter.jsp" />
+
+    <definition name="match-param" template="/WEB-INF/jsp/template/match-param.jsp" />
+    <definition name="match-image" template="/WEB-INF/jsp/template/match-image.jsp" />
+
+    <definition name="cart-item-actions" template="/WEB-INF/jsp/template/cart-item-actions.jsp" />
+
+    <definition name="offer-price" template="/WEB-INF/jsp/template/offer-price.jsp" />
+    <definition name="model-price" template="/WEB-INF/jsp/template/model-price.jsp" />
+
+    <definition name="category-comparison-list" template="/WEB-INF/jsp/template/category-comparison-list.jsp" />
+
+    <definition name="category-term" template="/WEB-INF/jsp/template/category-term.jsp" />
+
+    <!-- Поддержка псевдоссылок -->
+    <definition name="match-tools" template="/WEB-INF/jsp/template/match-tools.jsp" />
+    <definition name="match-cart-info" template="/WEB-INF/jsp/template/match-cart-info.jsp" />
+    <definition name="cart-action-info" template="/WEB-INF/jsp/template/cart-action-info.jsp" />
+    <definition name="match-comparison-info" template="/WEB-INF/jsp/template/match-comparison-info.jsp" />
+    <definition name="comparison-action-info" template="/WEB-INF/jsp/template/comparison-action-info.jsp" />
+
+    <!-- Помощь, справка, советы -->
+    <definition name="help-offer" template="/WEB-INF/jsp/template/help-offer.jsp" />
+    
+</tiles-definitions>

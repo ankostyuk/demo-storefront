@@ -1,0 +1,26 @@
+/* Параметры шкуры */
+body {
+    background: url("../i/header/metal.png") no-repeat 210px 0 #fff; 
+}
+
+#navbar a {
+    color: #010101;
+}
+#navbar a:hover {
+    color: #fffacf;
+}
+#navbar .current {
+    font-weight: bold;
+    color: #ffffff;
+}
+
+#searchbar .options .text {
+    color: #010101;
+    background: url('../i/semi-white.png') repeat;
+}
+#searchbar .options a {
+    color: #010101;
+}
+#searchbar .options a:hover {
+    color: #fffacf;
+}

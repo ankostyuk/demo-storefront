@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ExtraCurrency">
+    <resultMap id="ExtraCurrencyResultMap" class="ExtraCurrency">
+        <result column="ec_id" property="id" />
+        <result column="ec_company_id" property="companyId" />
+        <result column="ec_currency" property="currency" />
+        <result column="ec_percent" property="percent" />
+        <result column="ec_fixed_rate" property="fixedRate" />
+    </resultMap>
+    
+    <sql id="all-fields">
+        ec_id,
+        ec_company_id,
+        ec_currency,
+        ec_percent,
+        ec_fixed_rate
+    </sql>
+
+    <select id="selectMapByCompanyId" parameterClass="int" resultMap="ExtraCurrencyResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM extra_currency
+        WHERE ec_company_id = #companyId#
+    </select>
+ 
+    <insert id="insert" parameterClass="ExtraCurrency">
+        <selectKey keyProperty="id" resultClass="int">
+            SELECT nextVal('extra_currency_ec_id_seq')
+        </selectKey>
+        INSERT INTO extra_currency (
+            <include refid="all-fields" />
+        ) VALUES (
+            #id#,
+            #companyId#,
+            #currency#,
+            #percent#,
+            #fixedRate#
+        )
+    </insert>
+    
+    <update id="updateInfo" parameterClass="ExtraCurrency">
+        UPDATE extra_currency SET
+            ec_currency = #currency#,
+            ec_percent = #percent#,
+            ec_fixed_rate = #fixedRate#
+        WHERE ec_id = #id#
+    </update>
+    
+    <delete id="delete" parameterClass="int">
+        DELETE FROM extra_currency
+        WHERE ec_id = #id#
+    </delete>
+</sqlMap>

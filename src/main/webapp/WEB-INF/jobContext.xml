@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="updateCurrencyRatesJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="currencyService" />
+        <property name="targetMethod" value="updateCurrencyRates" />
+        <property name="concurrent" value="false" />
+    </bean>
+
+    <bean id="deactivateOffersJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="offerService" />
+        <property name="targetMethod" value="deactivateOffers" />
+        <property name="concurrent" value="false" />
+    </bean>
+
+    <bean id="updateCurrencyRatesTrigger_simple" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+        <property name="jobDetail" ref="updateCurrencyRatesJobDetail" />
+        <!-- Один раз, через 30 секунд после запуска -->
+        <property name="startDelay" value="#{30 * 1000}" />
+        <property name="repeatInterval" value="0" />
+        <property name="repeatCount" value="0" />
+    </bean>
+
+    <bean id="updateCurrencyRatesTrigger_cron" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="updateCurrencyRatesJobDetail" />
+        <!-- Раз в сутки, в 3 часа ночи -->
+        <!-- http://www.opensymphony.com/quartz/wikidocs/CronTriggers%20Tutorial.html -->
+        <!--                                   S    M   H   DoM     M   DoW     [Y] -->
+        <property name="cronExpression" value="0    0   3   *       *   ?       " />
+    </bean>
+
+    <bean id="deactivateOffersTrigger_cron" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail" ref="deactivateOffersJobDetail" />
+        <!-- Раз в сутки, в 3.15 ночи -->
+        <!-- http://www.opensymphony.com/quartz/wikidocs/CronTriggers%20Tutorial.html -->
+        <!--                                   S    M    H   DoM     M   DoW     [Y] -->
+        <property name="cronExpression" value="0    15   3   *       *   ?       " />
+    </bean>
+
+    <!-- Планировщик обновлений курсов валют -->
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="updateCurrencyRatesTrigger_simple" />
+                <ref bean="updateCurrencyRatesTrigger_cron" />
+                <!--
+                <ref bean="deactivateOffersTrigger_cron" />
+                -->
+            </list>
+        </property>
+    </bean>
+
+</beans>

@@ -1,0 +1,24 @@
+/* Параметры шкуры */
+body {
+    background: url("../i/header/timber.png") no-repeat 140px 0 #fff; 
+}
+
+#navbar a {
+    color: #010101;
+    background: url('../i/semi-white.png') repeat;
+}
+#navbar a:hover {
+    color: #fffacf;
+}
+
+#searchbar .options .text {
+    color: #010101;
+    background: url('../i/semi-white.png') repeat;
+}
+#searchbar .options a {
+    color: #010101;
+}
+#searchbar .options a:hover {
+    color: #fffacf;
+}
+

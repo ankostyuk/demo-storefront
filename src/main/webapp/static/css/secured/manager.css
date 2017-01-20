@@ -1,0 +1,375 @@
+#header.manager {
+    border-bottom:1px solid #000;
+    background: #8BA2C9;
+}
+#footer.manager {
+    border-top: 1px solid #000;
+    background: #A3A8B4;
+}
+
+#nav {
+    margin-top: 45px;
+}
+#nav ul {
+    list-style-type: none;
+    padding-left: 1em;
+}
+#nav li {
+    display: inline;
+    padding: 5px;
+}
+#nav .active {
+    background-color: #EEE;
+}
+
+.catalog-tree ul {
+    margin: 0 0 0 0;
+    padding: 0 0 0 1em;
+}
+.catalog-tree li {
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    /*list-style: square outside;*/
+    list-style: none;
+}
+.catalog-tree .item {
+    padding: 0.2em 0 0.2em 0;
+    border-bottom: 1px solid #f6f6f6;
+    font-size: 100%;
+}
+.catalog-tree .item:hover {
+    background-color: #f6f6f6;
+}
+.catalog-tree .item .properties {
+    float: left;
+    text-align: left;
+}
+.catalog-tree .category .name {
+    font-weight: normal;
+}
+.catalog-tree .section .name {
+    font-weight: bold;
+}
+.catalog-tree .info {
+    font-size: 80%;
+    padding-left: 0.5em;
+}
+.catalog-tree .item .active {
+    color: #516897;
+}
+.catalog-tree .item .deactive {
+    color: #808080;
+}
+.enabled {
+    color: #516897;
+}
+.disabled {
+    color: #d0d0d0;
+}
+.catalog-tree .item .tools {
+    text-align: right;
+}
+/*.catalog-tree .tools .disabled {
+    color: #d0d0d0;
+}*/
+.tool {
+    color: #516897;
+    font-size: 100%;
+    padding-left: 0.2em;
+}
+.tool a {
+    text-decoration: none;
+    border-bottom: 0px dotted;
+}
+
+.action-set {
+    clear: both;
+    text-align: left;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    border-top: 1px solid #f0f0f0;
+}
+.no-border {
+    border: 0px;
+}
+.action-set .right {
+    text-align: right;
+}
+.action {
+}
+.action-set .enabled {
+    color: #516897;
+}
+.action-set .disabled {
+    color: #d0d0d0;
+}
+.action-set .attention {
+    color: #f00000;
+    font-weight: bold;
+}
+
+.unit-list {
+    padding: 0;
+}
+.unit-list li {
+    list-style: none;
+    margin: 0 0 0.5em 0;
+
+}
+.unit-list a{
+    color: #516897;
+}
+
+.param-group-list {
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+}
+.param-group-list ul {
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+}
+.param-group-list li {
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    list-style: none;
+}
+.param-group-list .param-group {
+    padding: 0.25em 0 0.4em 0;
+    font-size: 100%;
+    border-top: 1px solid #f0f0f0;
+}
+.param-group-list .param-group:hover {
+    background-color: #f0f0f0;
+}
+.param-group-list .name {
+}
+.param-group-list a {
+    font-weight: normal;
+    color: #516897;
+}
+.param-group-list .param-group .name a {
+    font-weight: bold;
+}
+.param-group .details {
+    margin: 0 0.5em 0 0;
+    padding: 0 0 0 0;
+    cursor: pointer;
+}
+.param-group .details a {
+    color: #808080;
+}
+.param-group-list .param-group .properties {
+    float: left;
+    text-align: left;
+}
+.param-group-list .param-group .tools {
+    text-align: right;
+}
+
+.param-list {
+    margin: 0 0 0 0;
+    padding: 0.5em 0 0.2em 0;
+}
+.param-list-sep {
+    margin: 0 0 0 0;
+    padding: 0 0 1em 0;
+}
+.param-list ul {
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+}
+.param-list li {
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    list-style: none;
+}
+.param-list .param {
+    /*margin: 0 1.6em 0 1.0em;
+    padding: 0.2em 0.2em 0.2em 0.4em;*/
+    margin: 0 0 0 0;
+    padding: 0.2em 0 0.2em 0.25em;
+    font-size: 100%;
+    border-top: 1px solid #f6f6f6;
+}
+.param-list .param:hover {
+    background-color: #f6f6f6;
+}
+.param-list a {
+    font-weight: normal;
+    color: #516897;
+}
+.param-list .param .name a {
+    font-weight: normal;
+}
+.param-list .param .properties {
+    float: left;
+    text-align: left;
+}
+.param-list .name {
+}
+.param-list .attention .name a {
+    color: #f00000;
+}
+.param-list .param .tools {
+    text-align: right;
+}
+
+.model-cat-path {
+    margin: 1em 0 1em 0;
+}
+.model-cat-path .new {
+    float: right;
+}
+
+.model-item {
+    margin-bottom: 1.5em;
+}
+.model-item h2 {
+    margin: 0 0 0.25em 0;
+}
+.model-item .toolbox {
+    float:right;
+    margin: 0;
+}
+.model-item .toolbox span {
+    margin-left: 1em;
+}
+
+.model-item p{
+    margin: 0.5em 0;
+}
+
+.manager-catalog-tree {
+    padding: 0;
+    margin: 1em 0 0 0;
+    border-right: 1px solid #d0d0d0;
+}
+.manager-catalog-tree ul {
+    padding: 0 0 0 1em;
+}
+.manager-catalog-tree li {
+    list-style: none;
+    margin: 0.5em;
+}
+.manager-catalog-tree span {
+    padding: 5px;
+    white-space:nowrap;
+}
+.manager-catalog-tree .current {
+    background: #DDDDDD;
+}
+.manager-catalog-tree .disabled {
+    color: #999;
+}
+.manager-catalog-tree .disabled a {
+    color: #999;
+}
+.manager-catalog-tree .current.disabled {
+    color: #777;
+}
+.manager-catalog-tree .info {
+    font-size: 75%;
+}
+
+.manager-catalog-tree .pending-offer-count {
+    font-size: 75%;
+    padding: 0 5px 0 1px;
+    margin-left: 5px;
+    color: #000;
+    background-color: #ffff00;
+    border: 1px solid #CCCC00;
+}
+
+.brand-group {
+    margin: 0;
+}
+.brand-group a{
+    text-decoration: none;
+    font-weight: bold;
+    color: #DDD;
+}
+ul.brand-list {
+    margin: 0.5em 0 1.5em 0;
+    padding: 0;
+    list-style: none;
+}
+
+ul.unlinked-brands {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 2em;
+}
+ul.unlinked-brands li {
+    margin: 0.5em 0 0 0;
+}
+ul.unlinked-brands .count {
+    color: #999;
+    margin-left: 0.5em;
+}
+
+.moderator-offer-list h2 {
+    float: left;
+    margin: 0 0.5em 0 0;
+}
+.moderator-offer-list p.time-box {
+    margin: 0.9em 0 0.5em 0;
+    color: #999;
+    font-size: 75%;
+}
+
+.moderator-offer-list p {
+    margin: 0.5em 0;
+}
+
+.moderator-offer-list .toolbox {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.moderator-offer-list .toolbox li{
+    display: inline;
+    margin: 0 0.5em 0 0;
+}
+
+.moderator-offer-list .status-approved {
+    padding: 0 0.25em 0 0.25em;
+    background: url("../i/dot-grid.png") repeat scroll 0 0 #e6f5e6;
+    border: 1px solid #b4e1b4;
+    color: #089d07;
+}
+.moderator-offer-list .status-pending {
+    padding: 0 0.25em 0 0.25em;
+    background: url("../i/dot-grid.png") repeat scroll 0 0 #ffffcc;
+    border: 1px solid #ecec7c;
+    color: #aaaa00;
+}
+.moderator-offer-list .status-rejected {
+    padding: 0 0.25em 0 0.25em;
+    background: url("../i/dot-grid.png") repeat scroll 0 0 #ffefef;
+    border: 1px solid #ffd1d1;
+    color: #ff6666;
+}
+
+table.manager-company-list {
+    margin: 1em 0 1em 0;
+    text-align: left;
+}
+table.manager-company-list th {
+    padding: 0.25em 0.5em 0.25em 0.5em;
+    border-bottom: 1px solid #EEE;
+}
+table.manager-company-list td {
+    padding: 0.25em 0.5em 0.25em 0.5em;
+    vertical-align: top;
+    border-bottom: 1px solid #EEE;
+}
+table.manager-company-list tr.odd {
+    background-color: #F5F5F5;
+}
+table.manager-company-list tr.even {
+}
+
+.search-box {
+    margin: 1em 0;
+}
+

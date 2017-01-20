@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Settings">
+    <resultMap id="SettingsResultMap" class="Settings">
+        <result column="set_id" property="id" />
+        <result column="set_region_id" property="regionId" />
+        <result column="set_region_aware" property="regionAware" />
+        <result column="set_price_type" property="priceType" />
+        <result column="set_extra_currency" property="extraCurrency" />
+        <result column="set_page_size" property="pageSize" />
+        <result property="region" resultMap="Region.RegionResultMap" />
+    </resultMap>
+    
+    <sql id="all-fields">
+        set_id,
+        set_region_id,
+        set_region_aware,
+        set_price_type,
+        set_extra_currency,
+        set_page_size
+    </sql>
+    
+    <select id="selectById" parameterClass="int" resultMap="SettingsResultMap">
+        SELECT
+            <include refid="all-fields" />,
+            <include refid="Region.all-fields" />
+        FROM settings
+        LEFT JOIN region ON set_region_id = reg_id
+        WHERE set_id = #id#
+    </select>
+  
+    <insert id="insert" parameterClass="Settings">
+        INSERT INTO settings (
+            <include refid="all-fields" />
+        ) VALUES (
+            #id#,
+            #regionId#,
+            #regionAware#,
+            #priceType#::t_price_type,
+            #extraCurrency#,
+            #pageSize#
+        )
+    </insert>
+    
+    <update id="updateInfo" parameterClass="Settings">
+        UPDATE settings SET
+            set_region_id = #regionId#,
+            set_region_aware = #regionAware#,
+            set_price_type = #priceType#::t_price_type,
+            set_extra_currency = #extraCurrency#,
+            set_page_size = #pageSize#
+        WHERE set_id = #id#
+    </update>
+
+</sqlMap>

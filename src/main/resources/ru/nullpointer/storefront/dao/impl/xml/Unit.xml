@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Unit">
+    <resultMap id="UnitResultMap" class="Unit">
+        <result column="unit_id" property="id" />
+        <result column="unit_name" property="name" />
+        <result column="unit_abbr" property="abbreviation" />
+    </resultMap>
+    
+    <sql id="all-fields">
+        unit_id,
+        unit_name,
+        unit_abbr
+    </sql>
+    
+    <select id="selectMapByIdSet" parameterClass="java.util.List" resultMap="UnitResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM unit
+        WHERE unit_id IN 
+        <iterate open="(" close=")" conjunction=",">
+            #[]#
+        </iterate>
+    </select>
+  
+    <select id="selectById" parameterClass="int" resultMap="UnitResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM unit
+        WHERE unit_id = #id#
+    </select>
+  
+    <select id="selectAll" resultMap="UnitResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM unit
+        ORDER BY 
+        /*unit_id*/
+        unit_name ASC
+    </select>
+
+    <select id="findByName" parameterClass="string" resultMap="UnitResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM unit
+        WHERE LOWER(unit_name) LIKE LOWER('%' || #text# || '%')
+    </select>
+
+    <insert id="insert" parameterClass="Unit">
+        <selectKey keyProperty="id" resultClass="int">
+            SELECT nextVal('unit_unit_id_seq')
+        </selectKey>
+        INSERT INTO unit (
+            <include refid="all-fields" />
+        ) VALUES (
+            #id#,
+            #name#,
+            #abbreviation#
+        )
+    </insert>
+    
+    <update id="updateInfo" parameterClass="Unit">
+        UPDATE unit SET
+            unit_name = #name#,
+            unit_abbr = #abbreviation#
+        WHERE unit_id = #id#
+    </update>
+    
+    <delete id="delete" parameterClass="int">
+        DELETE FROM unit
+        WHERE unit_id = #id#
+    </delete>
+    
+</sqlMap>

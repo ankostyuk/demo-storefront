@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="CurrencyRate">
+    <resultMap id="CurrencyRateResultMap" class="CurrencyRate">
+        <result column="cr_from_currency" property="fromCurrency" />
+        <result column="cr_from_rate" property="fromRate" />
+        <result column="cr_to_currency" property="toCurrency" />
+        <result column="cr_to_rate" property="toRate" />
+    </resultMap>
+    
+    <sql id="all-fields">
+        cr_from_currency,
+        cr_from_rate,
+        cr_to_currency,
+        cr_to_rate
+    </sql>
+    
+    <select id="selectByCurrencies" parameterClass="java.util.Map" resultMap="CurrencyRateResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM currency_rate
+        WHERE cr_from_currency = #fromCurrency# AND cr_to_currency = #toCurrency#
+    </select>
+  
+    <update id="update" parameterClass="CurrencyRate">
+        UPDATE currency_rate SET
+            cr_from_rate = #fromRate#,
+            cr_to_rate = #toRate#
+        WHERE cr_from_currency = #fromCurrency# AND cr_to_currency = #toCurrency#
+    </update>
+    
+</sqlMap>

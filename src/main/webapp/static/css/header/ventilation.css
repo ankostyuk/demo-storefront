@@ -1,0 +1,23 @@
+/* Параметры шкуры */
+body {
+    background: url("../i/header/ventilation.png") no-repeat 200px 0 #fff; 
+}
+
+#navbar a {
+    color: #010101;
+}
+#navbar a:hover {
+    color: #fffacf;
+}
+
+#searchbar .options .text {
+    color: #010101;
+}
+#searchbar .options a {
+    color: #010101;
+}
+#searchbar .options a:hover {
+    color: #fffacf;
+    background: url('../i/semi-black.png') repeat;
+}
+

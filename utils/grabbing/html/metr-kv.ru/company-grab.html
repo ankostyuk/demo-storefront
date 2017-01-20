@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title></title>
+	<meta name="title" content="" />
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+    <script type="text/javascript" src="../../../html/static/js/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="../../../html/static/js/jquery.xdomainajax-0.11-k1.js"></script>
+    <style type="text/css">
+        #action-box a {
+            display: inline-block;
+            margin-right: 20px;
+        }
+        #output-container {
+            width: 100%;
+            border: 1px solid black;
+            margin-top: 20px;
+            padding: 0 10px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!--<div id="grab-container" style="width: 100%; height: 200px; border: 1px solid black; overflow: scroll;">
+    </div>-->
+
+    <div id="action-box">
+        <a id="start-grub" href="#">Старт</a>
+        <a id="stop-grub" href="#">Стоп</a>
+    </div>
+
+    <div id="output-container">
+        <code>
+            /* Компании */<br/>
+            <span id="rows-box"></span><br/>
+            /* Количество компаний: <span id="term-count"></span> */<br/>
+        </code>
+    </div>
+
+<script type="text/javascript">
+// <![CDATA[
+    $(document).ready(function(){
+
+        var doc = $(document);
+
+        var rowsBox = $("#rows-box");
+        var termCountBox = $("#term-count");
+
+        var pageStartNumber = 0;
+        var pageFinishNumber = 1500;
+
+        var pageNumber = pageStartNumber;
+        var termCount = 0;
+
+        $("#start-grub").click(function(){
+            if (!doc.data("GRUB")) {
+                rowsBox.empty();
+                termCountBox.empty();
+                pageNumber = pageStartNumber;
+                termCount = 0;
+                doc.data("GRUB", true);
+                grab(pageNumber);
+            }
+        });
+        $("#stop-grub").click(function(){
+            doc.data("GRUB", false);
+        });
+
+        var company = {
+            name: "",
+            phone: "",
+            email: "",
+            site: "",
+            cat: ""
+        };
+
+        function grab(pageNumber) {
+            $.ajax({
+                //url: "http://www.metr-kv.ru/misc/pav.php?id=535",// + pageNumber + ".html",
+                url: "http://www.metr-kv.ru/misc/pav.php?id=" + pageNumber,
+                charset: "windows-1251",
+                //charset: "utf-8",
+                type: "GET",
+                success: function(result) {
+                    //console.log(result);
+
+                    company.name = "";
+                    company.phone = "";
+                    company.email = "";
+                    company.site = "";
+                    company.cat = "";
+
+                    $(result.responseText).find("tbody").each(function(index){
+                        var tbody = $(this);
+                        if (index == 0) {
+                            tbody.find("> tr").each(function(i){
+                                var tr = $(this);
+                                if (i == 0) {
+                                    company.name = $.trim(tr.find("> td > strong").text());
+                                } else {
+                                    var el = tr.find("> td > *");
+
+                                    if (el.is("a[href^='mailto:']")) {
+                                        company.email = $.trim(el.text());
+                                    } else
+                                    if (el.is("a[href]")) {
+                                        company.site = $.trim(el.attr("href"));
+                                    } else {
+                                        company.phone = $.trim(el.text());
+                                    }
+                                }
+                            });
+                        } else
+                        if (index == 1) {
+                            tbody.find("tr:first-child li > *").each(function(){
+                                company.cat += $.trim($(this).text()) + ". ";
+                            });
+                        }
+                    });
+
+                    console.log(pageNumber, " > ", company);
+
+                    if (company.name !== "") {
+                        var row = pageNumber + "#" + company.name + "#" + company.phone + "#" + company.email + "#" + company.site + "#" + company.cat + "<br/>";
+                        rowsBox.append(row);
+
+                        termCountBox.text(++termCount);
+                    }
+
+                    if (++pageNumber <= pageFinishNumber && doc.data("GRUB")) {
+                        setTimeout(function(){
+                            grab(pageNumber);
+                        }, 2000 + 3000*Math.random());
+                    }
+                }
+            });
+        }
+
+    });
+// ]]>
+</script>
+
+</body>
+</html>

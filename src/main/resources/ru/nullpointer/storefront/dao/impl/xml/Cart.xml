@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Cart">
+    <resultMap id="CartResultMap" class="Cart">
+        <result column="cart_id" property="id" />
+        <result column="cart_session_id" property="sessionId" />
+        <result column="cart_name" property="name" />
+        <result column="cart_description" property="description" />
+    </resultMap>
+    
+    <sql id="all-fields">
+        cart_id,
+        cart_session_id,
+        cart_name,
+        cart_description
+    </sql>
+    
+    <select id="selectBySessionId" parameterClass="int" resultMap="CartResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM cart
+        WHERE cart_session_id = #sessionId#
+        ORDER BY cart_id
+    </select>
+
+    <select id="selectById" parameterClass="int" resultMap="CartResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM cart
+        WHERE cart_id = #id#
+    </select>
+
+    <insert id="insert" parameterClass="Cart">
+        <selectKey keyProperty="id" resultClass="int">
+            SELECT nextVal('cart_cart_id_seq')
+        </selectKey>
+        INSERT INTO cart (
+            <include refid="all-fields" />
+        ) VALUES (
+            #id#,
+            #sessionId#,
+            #name#,
+            #description#
+        )
+    </insert>
+
+    <update id="updateInfo" parameterClass="Cart">
+        UPDATE cart SET
+            cart_name = #name#,
+            cart_description = #description#
+        WHERE cart_id = #id#
+    </update>
+
+    <delete id="delete" parameterClass="int">
+        DELETE FROM cart
+        WHERE cart_id = #id#
+    </delete>
+
+</sqlMap>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ParamSelectOption">
+    <resultMap id="ParamSelectOptionResultMap" class="ParamSelectOption">
+        <result column="pso_id" property="id" />
+        <result column="pso_param_id" property="paramId" />
+        <result column="pso_name" property="name" />
+        <result column="pso_ordinal" property="ordinal" />
+    </resultMap>
+    
+    <sql id="all-fields">
+        pso_id,
+        pso_param_id,
+        pso_name,
+        pso_ordinal
+    </sql>
+    
+    <select id="selectById" parameterClass="int" resultMap="ParamSelectOptionResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM param_select_option
+        WHERE pso_id = #id#
+    </select>
+  
+    <select id="selectByParamId" parameterClass="int" resultMap="ParamSelectOptionResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM param_select_option
+        WHERE pso_param_id = #paramId#
+        ORDER BY pso_ordinal
+    </select>
+
+    <select id="selectByParamIdList" parameterClass="java.util.List" resultMap="ParamSelectOptionResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM param_select_option
+        WHERE pso_param_id IN 
+        <iterate open="(" close=")" conjunction=",">
+            #[]#
+        </iterate>
+        <!--
+            !!! Важно чтобы список был сначала отсортирован по id параметра, а затем по ordinal
+        -->
+        ORDER BY pso_param_id, pso_ordinal
+    </select>
+
+    <insert id="insert" parameterClass="ParamSelectOption">
+        <selectKey keyProperty="id" resultClass="int">
+            SELECT nextVal('param_select_option_pso_id_seq')
+        </selectKey>
+        INSERT INTO param_select_option (
+            <include refid="all-fields" />
+        ) VALUES (
+            #id#,
+            #paramId#,
+            #name#,
+            #ordinal#
+        )
+    </insert>
+    
+    <update id="updateInfo" parameterClass="ParamSelectOption">
+        UPDATE param_select_option SET
+            pso_name = #name#
+        WHERE pso_id = #id#
+    </update>
+    
+    <delete id="delete" parameterClass="int">
+        DELETE FROM param_select_option
+        WHERE pso_id = #id#
+    </delete>
+    
+</sqlMap>

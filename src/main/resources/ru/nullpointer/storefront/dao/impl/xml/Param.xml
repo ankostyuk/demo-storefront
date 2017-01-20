@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Param">
+    <resultMap id="ParamResultMap" class="Param">
+        <result column="par_id" property="id" />
+        <result column="par_psd_id" property="parameterSetDescriptorId" />
+        <result column="par_pg_id" property="paramGroupId" />
+        <result column="par_name" property="name" />
+        <result column="par_description" property="description" />
+        <result column="par_column_name" property="columnName" />
+        <result column="par_type" property="type" />
+        <result column="par_ordinal" property="ordinal" />
+        <result column="par_base" property="base" />
+        <discriminator javaType="ru.nullpointer.storefront.domain.param.Param$Type" column="par_type">
+            <subMap value="BOOLEAN" resultMap="BooleanParamResultMap" />
+            <subMap value="NUMBER" resultMap="NumberParamResultMap" />
+            <subMap value="SELECT" resultMap="SelectParamResultMap" />
+        </discriminator>
+    </resultMap>
+
+    <resultMap id="BooleanParamResultMap" class="BooleanParam" extends="ParamResultMap">
+        <result column="pb_true_name" property="trueName" />
+        <result column="pb_false_name" property="falseName" />
+    </resultMap>
+
+    <resultMap id="NumberParamResultMap" class="NumberParam" extends="ParamResultMap">
+        <result column="pn_min_value" property="minValue" />
+        <result column="pn_max_value" property="maxValue" />
+        <result column="pn_unit_id" property="unitId" />
+        <result column="pn_precision" property="precision" />
+    </resultMap>
+
+    <resultMap id="SelectParamResultMap" class="SelectParam" extends="ParamResultMap">
+    </resultMap>
+
+    <sql id="all-fields">
+        par_id,
+        par_psd_id,
+        par_pg_id,
+        par_name,
+        par_description,
+        par_column_name,
+        par_type,
+        par_ordinal,
+        par_base
+    </sql>
+
+    <sql id="all-fields-from">
+        par_id,
+        par_psd_id,
+        par_pg_id,
+        par_name,
+        par_description,
+        par_column_name,
+        par_type,
+        par_ordinal,
+        par_base,
+        
+        pb_true_name,
+        pb_false_name,
+
+        pn_id,
+        pn_min_value,
+        pn_max_value,
+        pn_unit_id,
+        pn_precision
+
+        FROM param
+        LEFT OUTER JOIN param_boolean ON pb_id = par_id
+        LEFT OUTER JOIN param_number ON pn_id = par_id
+    </sql>
+
+    <select id="selectById" parameterClass="int" resultMap="ParamResultMap">
+        SELECT
+            <include refid="all-fields-from" />
+        WHERE par_id = #id#
+    </select>
+  
+    <select id="selectAll" resultMap="ParamResultMap">
+        SELECT
+            <include refid="all-fields-from" />
+        ORDER BY 
+        par_name ASC
+    </select>
+  
+    <select id="selectByParamGroupId" parameterClass="int" resultMap="ParamResultMap">
+        SELECT
+            <include refid="all-fields-from" />
+        WHERE par_pg_id = #paramGroupId#
+        ORDER BY par_ordinal
+    </select>
+
+    <!-- !!! PUBLIC: используется не только в ParamDAO -->
+    <select id="selectByDescriptorId" parameterClass="int" resultMap="ParamResultMap">
+        SELECT
+            <include refid="all-fields-from" />
+        WHERE par_psd_id = #descriptorId#
+        ORDER BY par_id
+    </select>
+
+    <insert id="insert" parameterClass="Param">
+        <selectKey keyProperty="id" resultClass="int">
+            SELECT nextVal('param_par_id_seq')
+        </selectKey>
+        INSERT INTO param (
+            <include refid="all-fields" />
+        ) VALUES (
+            #id#,
+            #parameterSetDescriptorId#,
+            #paramGroupId#,
+            #name#,
+            #description#,
+            #columnName# || #id#,
+            #type#::t_param_type,
+            #ordinal#,
+            #base#
+        )
+    </insert>
+
+    <insert id="insertBoolean" parameterClass="BooleanParam">
+        INSERT INTO param_boolean (
+            pb_id,
+            pb_true_name,
+            pb_false_name
+        ) VALUES (
+            #id#,
+            #trueName#,
+            #falseName#
+        )
+    </insert>
+
+    <insert id="insertNumber" parameterClass="NumberParam">
+        INSERT INTO param_number (
+            pn_id,
+            pn_min_value,
+            pn_max_value,
+            pn_unit_id,
+            pn_precision
+        ) VALUES (
+            #id#,
+            #minValue#,
+            #maxValue#,
+            #unitId#,
+            #precision#
+        )
+    </insert>
+
+    <update id="updateInfo" parameterClass="Param">
+        UPDATE param SET
+            par_name = #name#,
+            par_description = #description#,
+            par_base = #base#
+        WHERE par_id = #id#
+    </update>
+
+    <update id="updateBooleanInfo" parameterClass="BooleanParam">
+        UPDATE param_boolean SET
+            pb_true_name = #trueName#,
+            pb_false_name = #falseName#
+        WHERE pb_id = #id#
+    </update>
+
+    <update id="updateNumberInfo" parameterClass="NumberParam">
+        UPDATE param_number SET
+            pn_min_value = #minValue#,
+            pn_max_value = #maxValue#,
+            pn_unit_id = #unitId#,
+            pn_precision = #precision#
+        WHERE pn_id = #id#
+    </update>
+
+    <delete id="delete" parameterClass="int">
+        DELETE FROM param
+        WHERE par_id = #id#
+    </delete>
+    
+    <update id="updateGroup" parameterClass="Param">
+        UPDATE param SET
+            par_pg_id = #paramGroupId#
+        WHERE par_id = #id#
+    </update>
+    
+    <update id="updateBase" parameterClass="Param">
+        UPDATE param SET
+            par_base = #base#
+        WHERE par_id = #id#
+    </update>
+    
+</sqlMap>

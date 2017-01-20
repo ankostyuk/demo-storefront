@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ComparisonListItem">
+    <resultMap id="ComparisonListItemResultMap" class="ComparisonListItem">
+        <result column="cli_session_id" property="sessionId" />
+        <result column="cli_category_id" property="categoryId" />
+        <result column="cli_match_type" property="match.type" />
+        <result column="cli_match_id" property="match.id" />
+    </resultMap>
+    
+    <sql id="all-fields">
+        cli_session_id,
+        cli_category_id,
+        cli_match_type,
+        cli_match_id
+    </sql>
+    
+    <select id="selectBySessionId" parameterClass="int" resultMap="ComparisonListItemResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM comparison_list_item
+        WHERE cli_session_id = #sessionId#
+        ORDER BY cli_category_id, cli_id
+    </select>
+  
+    <insert id="insert" parameterClass="ComparisonListItem">
+        INSERT INTO comparison_list_item (
+            <include refid="all-fields" />
+        ) VALUES (
+            #sessionId#,
+            #categoryId#,
+            #match.type#::t_match_type,
+            #match.id#
+        )
+    </insert>
+    
+    <delete id="delete" parameterClass="java.util.Map">
+        DELETE FROM comparison_list_item
+        WHERE cli_session_id = #sessionId#
+        AND cli_category_id = #categoryId#
+        <isNotNull property="match">
+            AND cli_match_type = #match.type#::t_match_type
+            AND cli_match_id = #match.id#
+        </isNotNull>
+    </delete>
+
+</sqlMap>

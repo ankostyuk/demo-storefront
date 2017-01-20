@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+"-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+"http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+    <definition name="secured-manager-common" template="/WEB-INF/jsp/template/secured/manager/common.jsp">
+        <put-attribute name="header" value="/WEB-INF/jsp/template/secured/manager/header.jsp" />
+        <put-attribute name="key" value="" />
+        <put-attribute name="metadata.title" value="" />
+        <put-attribute name="metadata.description" value="" />
+        <put-attribute name="metadata.keywords" value="" />
+        <put-attribute name="footer" value="/WEB-INF/jsp/template/secured/manager/footer.jsp" />
+        <put-list-attribute name="cssList">
+            <add-attribute value="${main.css}" />
+            <add-attribute value="${secured/manager.css}" />
+        </put-list-attribute>
+        <put-list-attribute name="scriptList" />
+    </definition>
+
+    <definition name="secured-manager-common-right" template="/WEB-INF/jsp/template/secured/manager/common-two-columns-right.jsp">
+        <put-attribute name="header" value="/WEB-INF/jsp/template/secured/manager/header.jsp" />
+        <put-attribute name="metadata.title" value="" />
+        <put-attribute name="metadata.description" value="" />
+        <put-attribute name="metadata.keywords" value="" />
+        <put-attribute name="footer" value="/WEB-INF/jsp/template/secured/manager/footer.jsp" />
+        <put-list-attribute name="cssList">
+            <add-attribute value="${main.css}" />
+            <add-attribute value="${secured/manager.css}" />
+        </put-list-attribute>
+        <put-list-attribute name="scriptList" />
+    </definition>
+
+    <definition name="secured-manager-common-no-sidebar" template="/WEB-INF/jsp/template/secured/manager/common-no-sidebar.jsp">
+        <put-attribute name="header" value="/WEB-INF/jsp/template/secured/manager/header.jsp" />
+        <put-attribute name="metadata.title" value="" />
+        <put-attribute name="metadata.description" value="" />
+        <put-attribute name="metadata.keywords" value="" />
+        <put-attribute name="footer" value="/WEB-INF/jsp/template/secured/manager/footer.jsp" />
+        <put-list-attribute name="cssList">
+            <add-attribute value="${main.css}" />
+            <add-attribute value="${secured/manager.css}" />
+        </put-list-attribute>
+        <put-list-attribute name="scriptList" />
+    </definition>
+
+    <definition name="secured/manager" extends="secured-manager-common">
+        <put-attribute name="metadata.title" value="Раздел менеджера" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager.jsp" />
+    </definition>
+
+    <!-- Управление каталогом товаров -->
+    <definition name="secured-manager-common-catalog" extends="secured-manager-common">
+        <put-attribute name="key" value="catalog" />
+    </definition>
+
+    <definition name="secured/manager/catalog" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Управление каталогом товаров" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog.jsp" />
+    </definition>
+
+    <!-- Структура каталога -->
+    <definition name="secured/manager/catalog/structure" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Структура каталога товаров" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/structure.jsp" />
+    </definition>
+
+    <!-- item -->
+    <definition name="secured/manager/catalog/structure/item/shift" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Изменение порядка элемента каталога" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/structure/item/shift.jsp" />
+    </definition>
+
+    <definition name="secured/manager/catalog/structure/item/edit/order" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Изменение порядка элемента каталога" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/structure/item/edit_order.jsp" />
+    </definition>
+
+    <!-- section -->
+    <definition name="secured/manager/catalog/structure/section/edit" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Редактирование раздела каталога" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/structure/section/edit.jsp" />
+    </definition>
+
+    <definition name="secured/manager/catalog/structure/section/edit/section" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Перемещение раздела каталога в другой раздел" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/structure/section/edit_parent.jsp" />
+    </definition>
+
+    <definition name="secured/manager/catalog/structure/section/switch/active" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Изменение активности раздела каталога" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/structure/section/switch_active.jsp" />
+    </definition>
+
+    <definition name="secured/manager/catalog/structure/section/delete" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Удаление раздела каталога" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/structure/section/delete.jsp" />
+    </definition>
+
+    <definition name="secured/manager/catalog/structure/section/add" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Добавление раздела каталога" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/structure/section/add.jsp" />
+    </definition>
+
+    <!-- Категория каталога -->
+    <definition name="secured/manager/catalog/structure/category/edit" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Редактирование категории каталога" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/structure/category/edit.jsp" />
+    </definition>
+
+    <definition name="secured/manager/catalog/structure/category/edit/section" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Перемещение категории каталога в другой раздел" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/structure/category/edit_parent.jsp" />
+    </definition>
+
+    <definition name="secured/manager/catalog/structure/category/switch/active" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Изменение активности категории каталога" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/structure/category/switch_active.jsp" />
+    </definition>
+
+    <definition name="secured/manager/catalog/structure/category/delete" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Удаление категории каталога" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/structure/category/delete.jsp" />
+    </definition>
+
+    <definition name="secured/manager/catalog/structure/category/add" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Добавление категории каталога" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/structure/category/add.jsp" />
+    </definition>
+
+    <!-- Единицы измерения -->
+    <definition name="secured/manager/catalog/unit" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Единицы измерения" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/unit.jsp" />
+    </definition>
+
+    <definition name="secured/manager/catalog/unit/add" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Добавление единицы измерения" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/unit/form.jsp" />
+    </definition>
+
+    <definition name="secured/manager/catalog/unit/edit" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Редактирование единицы измерения" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/unit/form.jsp" />
+    </definition>
+
+    <definition name="secured/manager/catalog/unit/delete" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Удаление единицы измерения" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/unit/delete.jsp" />
+    </definition>
+
+    <!-- Параметры категории -->
+    <definition name="secured/manager/catalog/category/param" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Параметры категории" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/category/param.jsp" />
+    </definition>
+
+    <definition name="secured/manager/catalog/category/param/group/add" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Добавление группы параметров категории" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/category/param/group/add.jsp" />
+    </definition>
+
+    <definition name="secured/manager/catalog/category/param/group/edit" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Редактирование группы параметров категории" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/category/param/group/edit.jsp" />
+    </definition>
+
+    <definition name="secured/manager/catalog/category/param/group/edit/order" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Изменение порядка группы параметров категории" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/category/param/group/edit_order.jsp" />
+    </definition>
+
+    <definition name="secured/manager/catalog/category/param/group/shift" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Изменение порядка группы параметров категории" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/category/param/group/shift.jsp" />
+    </definition>
+
+    <definition name="secured/manager/catalog/category/param/group/delete" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Удаление группы параметров категории" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/category/param/group/delete.jsp" />
+    </definition>
+
+    <definition name="secured/manager/catalog/category/param/add" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Добавление параметра категории" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/category/param/add.jsp" />
+    </definition>
+
+    <definition name="secured/manager/catalog/category/param/delete" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Удаление параметра категории" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/category/param/delete.jsp" />
+    </definition>
+
+    <definition name="secured/manager/catalog/category/param/edit/order" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Изменение порядка параметра категории" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/category/param/edit_order.jsp" />
+    </definition>
+
+    <definition name="secured/manager/catalog/category/param/edit/group" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Перемещение параметра категории в другую группу" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/category/param/edit_group.jsp" />
+    </definition>
+
+    <definition name="secured/manager/catalog/category/param/shift" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Перемещение параметра категории в группе" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/category/param/shift.jsp" />
+    </definition>
+
+    <definition name="secured/manager/catalog/category/param/switch/base" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Изменение параметра категории" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/category/param/switch_base.jsp" />
+    </definition>
+
+    <!-- Параметры категории CRUD -->
+    <definition name="param-common-form" template="/WEB-INF/jsp/secured/manager/catalog/category/param/param-common-form.jsp" />
+    <definition name="param-common-actions" template="/WEB-INF/jsp/secured/manager/catalog/category/param/param-common-actions.jsp" />
+
+    <definition name="secured/manager/catalog/category/param/boolean/add" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Добавление логического параметра категории" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/category/param/boolean_form.jsp" />
+    </definition>
+
+    <definition name="secured/manager/catalog/category/param/boolean/edit" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Редактирование логического параметра категории" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/category/param/boolean_form.jsp" />
+    </definition>
+
+    <definition name="secured/manager/catalog/category/param/number/add" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Добавление числового параметра категории" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/category/param/number_form.jsp" />
+        <put-list-attribute name="cssList" inherit="true">
+            <add-attribute value="${jquery.suggest.css}" />
+        </put-list-attribute>
+        <put-list-attribute name="scriptList" inherit="true">
+            <add-attribute value="${jquery.js}" />
+            <add-attribute value="${jquery.ajaxmanager.js}" />
+            <add-attribute value="${jquery.suggest.js}" />
+            <add-attribute value="${jquery-ui.js}" />
+            <add-attribute value="${jquery.tools.js}" />
+            <add-attribute value="${jquery.listenerchange.js}" />
+            <add-attribute value="${jquery.form.js}" />
+            <add-attribute value="${jquery.ui.customslider.js}" />
+            <add-attribute value="${storefront.helper.js}" />
+        </put-list-attribute>
+    </definition>
+
+    <definition name="secured/manager/catalog/category/param/number/edit" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Редактирование числового параметра категории" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/category/param/number_form.jsp" />
+        <put-list-attribute name="cssList" inherit="true">
+            <add-attribute value="${jquery.suggest.css}" />
+        </put-list-attribute>
+        <put-list-attribute name="scriptList" inherit="true">
+            <add-attribute value="${jquery.js}" />
+            <add-attribute value="${jquery.ajaxmanager.js}" />
+            <add-attribute value="${jquery.suggest.js}" />
+            <add-attribute value="${jquery-ui.js}" />
+            <add-attribute value="${jquery.tools.js}" />
+            <add-attribute value="${jquery.listenerchange.js}" />
+            <add-attribute value="${jquery.form.js}" />
+            <add-attribute value="${jquery.ui.customslider.js}" />
+            <add-attribute value="${storefront.helper.js}" />
+        </put-list-attribute>
+    </definition>
+
+    <definition name="secured/manager/catalog/category/param/select/add" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Добавление выборочного параметра категории" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/category/param/select_form.jsp" />
+    </definition>
+
+    <definition name="secured/manager/catalog/category/param/select/edit" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Редактирование выборочного параметра категории" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/category/param/select_form.jsp" />
+    </definition>
+
+    <definition name="secured/manager/catalog/category/param/select/option/delete" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Удаление варианта выбора" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/category/param/option/delete.jsp" />
+    </definition>
+
+    <definition name="secured/manager/catalog/category/param/select/option/shift" extends="secured-manager-common-catalog">
+        <put-attribute name="metadata.title" value="Перемещение варианта выбора" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/catalog/category/param/option/shift.jsp" />
+    </definition>
+
+    <!-- Модели -->
+    <definition name="secured/manager/model" extends="secured-manager-common-right">
+        <put-attribute name="metadata.title" value="Модели" />
+        <put-attribute name="key" value="model" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/model.jsp" />
+    </definition>
+
+    <definition name="secured/manager/model/add" extends="secured-manager-common">
+        <put-attribute name="metadata.title" value="Добавление модели" />
+        <put-attribute name="key" value="model" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/model/form.jsp" />
+        <put-list-attribute name="cssList" inherit="true">
+            <add-attribute value="${jquery.suggest.css}" />
+        </put-list-attribute>
+        <put-list-attribute name="scriptList" inherit="true">
+            <add-attribute value="${jquery.js}" />
+            <add-attribute value="${jquery.ajaxmanager.js}" />
+            <add-attribute value="${jquery.suggest.js}" />
+            <add-attribute value="${jquery-ui.js}" />
+            <add-attribute value="${jquery.tools.js}" />
+            <add-attribute value="${jquery.listenerchange.js}" />
+            <add-attribute value="${jquery.form.js}" />
+            <add-attribute value="${jquery.ui.customslider.js}" />
+            <add-attribute value="${storefront.helper.js}" />
+        </put-list-attribute>
+    </definition>
+
+    <definition name="secured/manager/model/edit" extends="secured-manager-common">
+        <put-attribute name="metadata.title" value="Редактирование модели" />
+        <put-attribute name="key" value="model" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/model/form.jsp" />
+        <put-list-attribute name="cssList" inherit="true">
+            <add-attribute value="${jquery.suggest.css}" />
+        </put-list-attribute>
+        <put-list-attribute name="scriptList" inherit="true">
+            <add-attribute value="${jquery.js}" />
+            <add-attribute value="${jquery.ajaxmanager.js}" />
+            <add-attribute value="${jquery.suggest.js}" />
+            <add-attribute value="${jquery-ui.js}" />
+            <add-attribute value="${jquery.tools.js}" />
+            <add-attribute value="${jquery.listenerchange.js}" />
+            <add-attribute value="${jquery.form.js}" />
+            <add-attribute value="${jquery.ui.customslider.js}" />
+            <add-attribute value="${storefront.helper.js}" />
+        </put-list-attribute>
+    </definition>
+
+    <definition name="secured/manager/model/delete" extends="secured-manager-common">
+        <put-attribute name="metadata.title" value="Удаление модели" />
+        <put-attribute name="key" value="model" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/model/delete.jsp" />
+    </definition>
+
+    <!-- Бренды -->
+    <definition name="secured/manager/brand" extends="secured-manager-common">
+        <put-attribute name="metadata.title" value="Бренды" />
+        <put-attribute name="key" value="brand" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/brand.jsp" />
+    </definition>
+
+    <definition name="secured/manager/brand/add" extends="secured-manager-common">
+        <put-attribute name="metadata.title" value="Добавление бренда" />
+        <put-attribute name="key" value="brand" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/brand/form.jsp" />
+    </definition>
+
+    <definition name="secured/manager/brand/edit" extends="secured-manager-common">
+        <put-attribute name="metadata.title" value="Редактирование бренда" />
+        <put-attribute name="key" value="brand" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/brand/form.jsp" />
+    </definition>
+
+    <definition name="secured/manager/brand/link" extends="secured-manager-common">
+        <put-attribute name="metadata.title" value="Связывание предложений" />
+        <put-attribute name="key" value="brand" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/brand/link.jsp" />
+        <put-list-attribute name="cssList" inherit="true">
+            <add-attribute value="${jquery.suggest.css}" />
+        </put-list-attribute>
+        <put-list-attribute name="scriptList" inherit="true">
+            <add-attribute value="${jquery.js}" />
+            <add-attribute value="${jquery.ajaxmanager.js}" />
+            <add-attribute value="${jquery.suggest.js}" />
+            <add-attribute value="${jquery-ui.js}" />
+            <add-attribute value="${jquery.tools.js}" />
+            <add-attribute value="${jquery.listenerchange.js}" />
+            <add-attribute value="${jquery.form.js}" />
+            <add-attribute value="${jquery.ui.customslider.js}" />
+            <add-attribute value="${storefront.helper.js}" />
+        </put-list-attribute>
+    </definition>
+
+    <!-- Модератор -->
+    <!-- Предложения -->
+    <definition name="secured/manager/moderator/offer" extends="secured-manager-common-right">
+        <put-attribute name="metadata.title" value="Модерация предложений" />
+        <put-attribute name="key" value="moderator_offer" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/moderator/offer.jsp" />
+        <put-list-attribute name="scriptList" inherit="true">
+            <add-attribute value="${jquery.js}" />
+            <add-attribute value="${jquery.ajaxmanager.js}" />
+            <add-attribute value="${jquery.suggest.js}" />
+            <add-attribute value="${jquery-ui.js}" />
+            <add-attribute value="${jquery.tools.js}" />
+            <add-attribute value="${jquery.listenerchange.js}" />
+            <add-attribute value="${jquery.form.js}" />
+            <add-attribute value="${jquery.ui.customslider.js}" />
+            <add-attribute value="${storefront.helper.js}" />
+        </put-list-attribute>
+    </definition>
+
+    <definition name="secured/manager/moderator/offer/decision" extends="secured-manager-common">
+        <put-attribute name="metadata.title" value="Модерация предложения" />
+        <put-attribute name="key" value="moderator_offer" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/moderator/offer/decision.jsp" />
+    </definition>
+    
+    <!-- Словарь терминов -->
+    <definition name="secured/manager/term" extends="secured-manager-common">
+        <put-attribute name="metadata.title" value="Словарь терминов" />
+        <put-attribute name="key" value="term" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/term.jsp" />
+    </definition>
+
+    <definition name="secured/manager/term/add" extends="secured-manager-common">
+        <put-attribute name="metadata.title" value="Добавление термина" />
+        <put-attribute name="key" value="term" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/term/form.jsp" />
+    </definition>
+
+    <definition name="secured/manager/term/edit" extends="secured-manager-common">
+        <put-attribute name="metadata.title" value="Редактирование термина" />
+        <put-attribute name="key" value="term" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/term/form.jsp" />
+    </definition>
+
+    <definition name="secured/manager/term/delete" extends="secured-manager-common">
+        <put-attribute name="metadata.title" value="Удаление термина" />
+        <put-attribute name="key" value="term" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/term/delete.jsp" />
+    </definition>
+
+    <!-- Поставщики -->
+    <definition name="secured/manager/company" extends="secured-manager-common-no-sidebar">
+        <put-attribute name="metadata.title" value="Поставщики" />
+        <put-attribute name="key" value="company" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/manager/company.jsp" />
+    </definition>
+
+</tiles-definitions>

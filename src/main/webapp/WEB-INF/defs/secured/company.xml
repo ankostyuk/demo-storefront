@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+"-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+"http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+
+    <!-- Блок <head></head> -->
+    <definition name="secured-company-head" template="/WEB-INF/jsp/template/secured/company/head.jsp" >
+        <put-attribute name="cssIE" value="${style_ie.css}" />
+        <put-attribute name="cssIE7" value="${style_ie7.css}" />
+        <put-list-attribute name="cssList">
+            <!-- TODO все CSS в один файл ? -->
+            <add-attribute value="${jquery-ui.css}" />
+            <add-attribute value="${jquery.suggest.css}" />
+            <add-attribute value="${style.css}" />
+            <add-attribute value="${secured/company.css}" />
+        </put-list-attribute>
+        <put-list-attribute name="scriptList" inherit="true">
+            <!-- TODO все скрипты в один файл и сжать -->
+            <add-attribute value="${jquery.js}" />
+            <add-attribute value="${jquery.ajaxmanager.js}" />
+            <add-attribute value="${jquery.suggest.js}" />
+            <add-attribute value="${jquery-ui.js}" />
+            <add-attribute value="${jquery.tools.js}" />
+            <add-attribute value="${jquery.listenerchange.js}" />
+            <add-attribute value="${jquery.form.js}" />
+            <add-attribute value="${jquery.ui.customslider.js}" />
+            <add-attribute value="${jquery.cookie.js}" />
+            <add-attribute value="${storefront.helper.js}" />
+        </put-list-attribute>
+    </definition>
+    <!-- Шапка -->
+    <definition name="secured-company-header" template="/WEB-INF/jsp/template/secured/company/header.jsp" />
+    <!-- Подвал -->
+    <definition name="secured-company-footer" template="/WEB-INF/jsp/template/secured/company/footer.jsp" />
+    <!-- Блок перед </body> -->
+    <definition name="secured-company-foot" template="/WEB-INF/jsp/template/secured/company/foot.jsp" />
+
+    <!-- Макет с левой колонкой -->
+    <definition name="secured-company-common-left-sidebar" template="/WEB-INF/jsp/template/secured/company/common-left-sidebar.jsp" preparer="companyViewPreparer">
+        <put-attribute name="metadata.title" value="" />
+        <put-attribute name="metadata.description" value="" />
+        <put-attribute name="metadata.keywords" value="" />
+        <put-attribute name="head" value="secured-company-head" type="definition" />
+        <put-attribute name="header" value="secured-company-header" type="definition" />
+        <put-attribute name="footer" value="secured-company-footer" type="definition" />
+        <put-attribute name="foot" value="secured-company-foot" type="definition" />
+    </definition>
+
+    <!-- Макет без колонок -->
+    <definition name="secured-company-common-no-sidebar" template="/WEB-INF/jsp/template/secured/company/common-no-sidebar.jsp" preparer="companyViewPreparer">
+        <put-attribute name="metadata.title" value="" />
+        <put-attribute name="metadata.description" value="" />
+        <put-attribute name="metadata.keywords" value="" />
+        <put-attribute name="head" value="secured-company-head" type="definition" />
+        <put-attribute name="header" value="secured-company-header" type="definition" />
+        <put-attribute name="footer" value="secured-company-footer" type="definition" />
+        <put-attribute name="foot" value="secured-company-foot" type="definition" />
+    </definition>
+
+    <!-- Страница приветствия -->
+    <definition name="secured/company/welcome" extends="secured-company-common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Добро пожаловать" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/company/welcome.jsp" />
+        <put-attribute name="pageKey" cascade="true" value="welcome" />
+    </definition>
+
+    <!-- Товарные предложения -->
+    <definition name="secured-company-offer-list-item" template="/WEB-INF/jsp/template/secured/company/offer-list-item.jsp" />
+    <definition name="secured-company-category-select" template="/WEB-INF/jsp/template/secured/company/category-select.jsp" />
+
+    <definition name="secured-company-catalog-tree" template="/WEB-INF/jsp/template/secured/company/catalog-tree.jsp" />
+    <definition name="secured-company-catalog-tree-filter" template="/WEB-INF/jsp/template/secured/company/catalog-tree-filter.jsp" />
+
+    <definition name="secured-company-catalog-item-path" template="/WEB-INF/jsp/template/secured/company/catalog-item-path.jsp" />
+
+    <definition name="secured/company/offers" extends="secured-company-common-left-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Предложения" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/company/offers.jsp" />
+        <put-attribute name="pageKey" cascade="true" value="offers" />
+    </definition>
+
+    <definition name="secured/company/offers_empty" extends="secured-company-common-left-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Предложения" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/company/offers_empty.jsp" />
+        <put-attribute name="pageKey" cascade="true" value="offers" />
+    </definition>
+
+    <definition name="secured/company/offer/add" extends="secured-company-common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Добавление предложения" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/company/offer/form.jsp" />
+        <put-attribute name="pageKey" cascade="true" value="offers/add" />
+    </definition>
+
+    <definition name="secured/company/offer/edit" extends="secured-company-common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Редактирование предложения" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/company/offer/form.jsp" />
+        <put-attribute name="pageKey" cascade="true" value="offers/edit" />
+    </definition>
+
+    <definition name="secured/company/offer/delete" extends="secured-company-common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Удаление предложения" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/company/offer/delete.jsp" />
+        <put-attribute name="pageKey" cascade="true" value="offers/delete" />
+    </definition>
+
+    <definition name="secured/company/offer/category" extends="secured-company-common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Добавление предложения" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/company/offer/category.jsp" />
+        <put-attribute name="pageKey" cascade="true" value="offers/category" />
+    </definition>
+
+    <definition name="secured/company/offer/move" extends="secured-company-common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Перемещение предложения" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/company/offer/move.jsp" />
+        <put-attribute name="pageKey" cascade="true" value="offers/move" />
+    </definition>
+
+    <!-- Результаты поиска -->
+    <definition name="secured/company/search/empty" extends="secured-company-common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Результаты поиска" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/company/search/empty.jsp" />
+    </definition>
+
+    <definition name="secured/company/search/result" extends="secured-company-common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Результаты поиска" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/company/search/result.jsp" />
+    </definition>
+
+    <!-- Настройки -->
+    <definition name="secured-company-settings-menu" template="/WEB-INF/jsp/template/secured/company/settings-menu.jsp" />
+
+    <definition name="secured/company/settings" extends="secured-company-common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Общие настройки" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/company/settings.jsp" />
+        <put-attribute name="pageKey" cascade="true" value="settings" />
+    </definition>
+
+    <!-- Настройки / Контакты -->
+    <definition name="secured/company/settings/contact" extends="secured-company-common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Контакты" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/company/settings/contact.jsp" />
+        <put-attribute name="pageKey" cascade="true" value="settings/contact" />
+    </definition>
+
+    <definition name="secured/company/settings/contact/add" extends="secured-company-common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Добавление контакта" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/company/settings/contact/form.jsp" />
+        <put-attribute name="pageKey" cascade="true" value="settings/contact/add" />
+    </definition>
+
+    <definition name="secured/company/settings/contact/edit" extends="secured-company-common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Редактирование контакта" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/company/settings/contact/form.jsp" />
+        <put-attribute name="pageKey" cascade="true" value="settings/contact/edit" />
+    </definition>
+
+    <definition name="secured/company/settings/contact/delete" extends="secured-company-common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Удаление контакта" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/company/settings/contact/delete.jsp" />
+        <put-attribute name="pageKey" cascade="true" value="settings/contact/delete" />
+    </definition>
+
+    <!-- Настройки / Доставка -->
+    <definition name="secured/company/settings/delivery" extends="secured-company-common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Условия доставки" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/company/settings/delivery.jsp" />
+        <put-attribute name="pageKey" cascade="true" value="settings/delivery" />
+    </definition>
+
+    <definition name="secured/company/settings/delivery/region/delete" extends="secured-company-common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Удаление региона доставки" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/company/settings/delivery_region_delete.jsp" />
+        <put-attribute name="pageKey" cascade="true" value="settings/delivery/region/delete" />
+    </definition>
+
+    <!-- Настройки / Курсы валют -->
+    <definition name="secured/company/settings/currency" extends="secured-company-common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Курсы валют" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/company/settings/currency.jsp" />
+        <put-attribute name="pageKey" cascade="true" value="settings/currency" />
+    </definition>
+
+    <!-- Настройки / Смена пароля -->
+    <definition name="secured/company/settings/password" extends="secured-company-common-no-sidebar">
+        <put-attribute name="metadata.title" cascade="true" value="Изменить пароль" />
+        <put-attribute name="content" value="/WEB-INF/jsp/secured/company/settings/password.jsp" />
+        <put-attribute name="pageKey" cascade="true" value="settings/password" />
+    </definition>
+
+</tiles-definitions>

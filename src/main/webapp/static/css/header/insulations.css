@@ -1,0 +1,28 @@
+/* Параметры шкуры */
+body {
+    background: url("../i/header/insulations.png") no-repeat 130px 0 #fff; 
+}
+
+#navbar a {
+    color: #fffacf;
+}
+#navbar a:hover {
+    color: #010101;
+}
+#navbar .current {
+    font-weight: bold;
+    color: #ffffff;
+}
+
+#searchbar .options .text {
+    color: #010101;
+    background: url('../i/semi-white.png') repeat;
+}
+#searchbar .options a {
+    color: #010101;
+}
+#searchbar .options a:hover {
+    color: #fffacf;
+}
+
+

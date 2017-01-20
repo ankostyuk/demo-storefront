@@ -1,0 +1,26 @@
+/* Параметры шкуры */
+body {
+    background: url("../i/header/fasteners.png") no-repeat 190px 0 #fff; 
+}
+
+#navbar a {
+    color: #fffacf;
+    background: url('../i/semi-black.png') repeat;
+}
+#navbar a:hover {
+    color: #ffffff;
+}
+
+#searchbar .options .text {
+    color: #ffffff;
+    background: url('../i/semi-black.png') repeat;
+}
+#searchbar .options a {
+    color: #fffacf;
+}
+#searchbar .options a:hover {
+    color: #ffffff;
+}
+
+
+

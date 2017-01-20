@@ -1,0 +1,264 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru-RU"> 
+<head> 
+    <title>storefront-jquery.suggest-test</title> 
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" /> 
+    <link rel="stylesheet" type="text/css" href="../css/jquery.suggest.css" />
+    <link rel="stylesheet" type="text/css" href="main.css" />
+    <script type="text/javascript" src="../js/jquery-1.3.2.js"></script>
+    <script type="text/javascript" src="../js/jquery.ajaxmanager-2.5.4.js"></script>
+    <script type="text/javascript" src="../js/jquery.suggest-0.7.js"></script>
+    
+    <script type="text/javascript">
+    $(document).ready(function(){
+
+        var suggests = [];
+
+        var testArrScl = ["Зеленоград", "Москва", "Подольск"];
+        var testArrObj = [];
+        for (var i = 0; i < testArrScl.length; i++) {
+            testArrObj.push({name: testArrScl[i], id: i});
+        }
+
+        var testDataObjObj = {items: testArrObj}; // OK
+        var testDataObjScl = {items: testArrScl}; // OK
+        var testDataArrObj = testArrObj; // OK
+        var testDataArrScl = testArrScl; // OK
+
+        $("#suggestTest").suggest({
+            TEST: testDataArrScl,
+            request: {
+                url: "http://int-projects.ru/",
+                queryParamName: "text"
+            },
+            data: {
+                itemsField: null,//"items",
+                searchField: null//"name"
+            },
+            onBlurWithChanged: function() {
+                //alert("onBlurWithChanged");
+
+                var $this = $(this);
+
+                var suggest = $this.suggest();
+                suggest.setRequestURL("http://int-projects.ru/0/" + $this.val());
+                suggest.setRequestParams({
+                    p1: "0_1" + $this.val(),
+                    p2: "0_2" + $this.val()
+                });
+
+                suggest = $("#regionTest_1").suggest();
+                suggest.setRequestURL("http://int-projects.ru/1/" + $this.val());
+                suggest.setRequestParams({
+                    p1: "1_1" + $this.val(),
+                    p2: "1_2" + $this.val()
+                });
+
+                suggest = $("#regionTest_2").suggest();
+                suggest.setRequestURL("http://int-projects.ru/2/" + $this.val());
+                suggest.setRequestParams({
+                    p1: "2_1" + $this.val(),
+                    p2: "2_2" + $this.val()
+                });
+
+                suggest = $("#regionTest_3").suggest();
+                suggest.setRequestURL("http://int-projects.ru/3/" + $this.val());
+                suggest.setRequestParams({
+                    p1: "3_1" + $this.val(),
+                    p2: "3_2" + $this.val()
+                });
+
+                suggest = $("#regionTest_3_1").suggest();
+                suggest.setRequestURL("http://int-projects.ru/3_1/" + $this.val());
+                suggest.setRequestParams({
+                    p1: "3_1_1" + $this.val(),
+                    p2: "3_1_2" + $this.val()
+                });
+
+                suggest = $("#regionTest_4").suggest();
+                suggest.setRequestURL("http://int-projects.ru/4/" + $this.val());
+                suggest.setRequestParams({
+                    p1: "4_1" + $this.val(),
+                    p2: "4_2" + $this.val()
+                });
+            }
+        }).each(function(){
+            suggests.push($(this).data("XXX"));
+        });
+
+        
+        var testDataItems_0 = [];
+        for (var i = 1; i <= 10; i++) {
+            var name = "";
+            for (var j = 0; j < i; j++) {
+                name += "0";
+            }
+            testDataItems_0.push({name: name, id: i});
+        }    
+        var testDataItems_1 = [];
+        for (var i = 1; i <= 10; i++) {
+            var name = "";
+            for (var j = 0; j < i; j++) {
+                name += "1";
+            }
+            testDataItems_1.push({name: name, id: i});
+        }    
+        
+        var testDataItems = [
+                             {name: "ообнообнскооб", id: 0},
+                             {name: "обнонско", id: 0},
+                             {name: "Обнонско", id: 0},
+                             {name: "11111 Зеленоград", id: 1},
+                             {name: "11111 Москва", id: 2},
+                             {name: "11111 Подольск", id: 3},
+                             {name: "11111 Химки", id: 4},
+                             {name: "11111 Коломна", id: 5},
+                             {name: "Дубна", id: 6},
+                             {name: "Долгопрудный", id: 7},
+                             {name: "Пущино", id: 8},
+                             {name: "Электросталь", id: 9},
+                             {name: "Серпухов", id: 10},
+                             {name: "Иваново", id: 11},
+                             {name: "Иваново", id: 12},
+                             {name: "Иваново", id: 13}
+                          ];
+        var object;
+        object = $(".regionTest").suggest({
+            request: {
+                //url: "http://www.linkexchanger.su/2008/39.html",
+                url: "http://www.int-projects.ru",
+                //url: "http://localhost:8080/storefront/regions",
+                queryParamName: "regionText"
+            },
+            data: {
+                //items: testDataItems_0,
+                itemsField: "items",
+                searchField: "name"
+            },
+            selectSelected: true,
+            onSelected: function(itemData) {
+                //alert(itemData.name);
+            },
+            minChars: 1,
+            maxListItems: 10
+        }).each(function(){
+            suggests.push($(this).suggest());
+        });
+        //object = $("#regionTest_3").suggest({
+        object = $(".regionClass").suggest({
+            request: {
+                url: "http://www.linkexchanger.su/2008/39.html",
+                //url: "http://www.int-projects.ru",
+                //url: "http://localhost:8080/storefront/regions",
+                params: {
+                    param_111: "string_111",
+                    param_222: 222
+                }
+            },
+            data: {
+                items: testDataItems_1,
+                itemsField: "items",
+                searchField: "name"
+            },
+            editClass: "",
+            //listClass: "",
+            //highlightClass: "",
+            tools: null,
+            minChars: 2,
+            maxListItems: 10
+        }).each(function(){
+            suggests.push($(this).suggest());
+        });
+        object = $("#regionTest_4").suggest({
+            data: {
+                testItems: testDataItems,
+                itemsField: "testItems",
+                searchField: "name"
+            },
+            //editClass: "main-jquery-suggest-edit",
+            //listClass: "",
+            //highlightClass: null,
+            search: {
+                matchCase: false,
+                matchStart: false
+            },
+            selectSelected: false,
+            formatItem: function(itemElement, index, itemData){
+                if (index == 0) {
+                    itemElement.css("border-top", "0");
+                }    
+                itemElement.html(itemElement.html() + " / " + itemData.id + "<a target='blank' href='http://google.com'>google</a>");
+            },
+            selectItem: function(itemElement, index, itemData){
+            },
+            onSelected: function(itemData) {
+                //alert(itemData.name);
+            },
+            minChars: 3,
+            maxListItems: 5
+        }).each(function(){
+            suggests.push($(this).suggest());
+        });
+
+        for (var i = 0; i < suggests.length; i++) {
+        }
+    });
+    </script>
+
+</head> 
+<body>
+    <div id="formContent">
+        <form>
+            <p>
+                <label>SUGGEST: <input id="suggestTest" type="text" value="test"/></label>
+            </p>
+            <p>
+                <label>Регион: <input id="regionTest_1" class="regionTest" type="text"/></label>
+                <label>Регион: <input id="regionTest_2" class="regionTest" type="text"/></label>
+                <label>Регион: <input id="regionTest_3" class="regionClass" type="text"/></label>
+                <label>Регион: <input id="regionTest_3_1" class="regionClass" type="text"/></label>
+                <label>Регион: <input id="regionTest_4" class="regionClass-1" type="text"/></label>
+            </p>
+            <div style="padding-left: 60px;">
+                <p>
+                    <input type="text"/>
+                </p>
+                <p>
+                    <input type="button"/>
+                </p>
+                <p>
+                    <input type="checkbox"/>
+                </p>
+                <p>
+                    <input type="file"/>
+                </p>
+                <p>
+                    <input type="image"/>
+                </p>
+                <p>
+                    <input type="radio"/>
+                </p>
+                <p>
+                    <input type="submit"/>
+                </p>
+                <p>
+                    <select>
+                        <option>111</option>
+                        <option>222</option>
+                    </select>
+                </p>
+                <p>
+                    <textarea rows="5" cols="1" style="width: 100px;"></textarea>
+                </p>
+            </div>
+        </form>
+    </div>
+    <hr/>
+    <div class='jquery-suggest-list' style="position: absolute; left: 1500px; top: 500px;">
+        <ul>
+            <li>123 <a href='http://google.com'>google</a></li>
+            <li>456</li>
+        </ul>
+    </div>
+</body>
+</html>

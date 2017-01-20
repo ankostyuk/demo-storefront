@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Account">
+    <resultMap id="AccountResultMap" class="Account">
+        <result column="acc_id" property="id" />
+        <result column="acc_email" property="email" />
+        <result column="acc_password" property="password" />
+        <result column="acc_newpassword" property="newPassword" />
+        <result column="acc_newpass_date" property="newPasswordDate" />
+        <result column="acc_email_authenticated_date" property="emailAuthenticatedDate" />
+        <result column="acc_email_token" property="emailToken" />
+        <result column="acc_email_token_expires_date" property="emailTokenExpiresDate" />
+        <result column="acc_registration_date" property="registrationDate" />
+        <result column="acc_last_login_date" property="lastLoginDate" />
+        <result column="acc_type" property="type" />
+    </resultMap>
+    
+    <sql id="all-fields">
+        acc_id,
+        acc_email,
+        acc_password,
+        acc_newpassword,
+        acc_newpass_date,
+        acc_email_authenticated_date,
+        acc_email_token,
+        acc_email_token_expires_date,
+        acc_registration_date,
+        acc_last_login_date,
+        acc_type
+    </sql>
+    
+    <select id="isEmailAvailable" parameterClass="string" resultClass="boolean">
+        SELECT 
+            count(acc_email) = 0
+        FROM account
+        WHERE acc_email = #email#
+    </select>
+    
+    <select id="selectByEmail" parameterClass="string" resultMap="AccountResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM account
+        WHERE acc_email = #email#
+    </select>
+
+    <select id="selectById" parameterClass="int" resultMap="AccountResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM account
+        WHERE acc_id = #id#
+    </select>
+
+    <select id="selectByType" parameterClass="java.util.Map" resultMap="AccountResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM account
+        WHERE acc_type = #type#::t_account_type
+        ORDER BY
+        <dynamic>
+            <isEqual property="sorting" compareValue="EMAIL_ASCENDING">
+                acc_email ASC
+            </isEqual>
+            <isEqual property="sorting" compareValue="EMAIL_DESCENDING">
+                acc_email DESC
+            </isEqual>
+            <isEqual property="sorting" compareValue="DATE_REGISTERED_ASCENDING">
+                acc_registration_date ASC
+            </isEqual>
+            <isEqual property="sorting" compareValue="DATE_REGISTERED_DESCENDING">
+                acc_registration_date DESC
+            </isEqual>
+            <isEqual property="sorting" compareValue="DATE_LAST_LOGIN_ASCENDING">
+                acc_last_login_date ASC
+            </isEqual>
+            <isEqual property="sorting" compareValue="DATE_LAST_LOGIN_DESCENDING">
+                acc_last_login_date DESC
+            </isEqual>
+        </dynamic>
+        NULLS LAST
+    </select>
+
+    <select id="selectMapByIdList" parameterClass="java.util.List" resultMap="AccountResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM account
+        WHERE acc_id IN
+        <iterate open="(" close=")" conjunction=",">
+            #[]#
+        </iterate>
+    </select>
+
+    <insert id="insert" parameterClass="Account">
+        <selectKey keyProperty="id" resultClass="int">
+            SELECT nextVal('account_acc_id_seq')
+        </selectKey>
+        INSERT INTO account (
+            <include refid="all-fields" />
+        ) VALUES (
+            #id#,
+            #email#,
+            #password#,
+            #newPassword#,
+            #newPasswordDate#,
+            #emailAuthenticatedDate#,
+            #emailToken#,
+            #emailTokenExpiresDate#,
+            #registrationDate#,
+            #lastLoginDate#,
+            #type#::t_account_type
+        )
+    </insert>
+    
+    <update id="update" parameterClass="Account">
+        UPDATE account SET
+            acc_email = #email#,
+            acc_password = #password#,
+            acc_newpassword = #newPassword#,
+            acc_newpass_date = #newPasswordDate#,
+            acc_email_authenticated_date = #emailAuthenticatedDate#,
+            acc_email_token = #emailToken#,
+            acc_email_token_expires_date = #emailTokenExpiresDate#,
+            acc_registration_date = #registrationDate#,
+            acc_last_login_date = #lastLoginDate#,
+            acc_type = #type#::t_account_type
+        WHERE acc_id = #id#
+    </update>
+
+    <delete id="delete" parameterClass="int">
+        DELETE FROM account
+        WHERE acc_id = #id#
+    </delete>
+
+    <!-- Role related -->
+    <select id="selectRole" parameterClass="int" resultClass="Role">
+        SELECT role_type
+        FROM role WHERE
+        role_account_id = #id#
+        ORDER BY role_type
+    </select>
+
+    <insert id="insertRole" parameterClass="java.util.Map">
+        INSERT INTO role (
+            role_account_id,
+            role_type
+        ) VALUES (
+            #accountId#,
+            #role#
+        )
+    </insert>
+
+    <delete id="deleteRole" parameterClass="java.util.Map">
+        DELETE FROM role 
+        WHERE role_account_id = #accountId#
+        AND role_type = #role#
+    </delete>
+
+    <select id="getIdListByRole" parameterClass="string" resultClass="int">
+        SELECT role_account_id AS id FROM role
+        WHERE role_type = #role#
+        ORDER BY id
+    </select>
+
+    <select id="countRegistered" parameterClass="java.util.Map" resultClass="int">
+        SELECT COUNT(*)
+        FROM account
+        WHERE acc_email_authenticated_date IS NOT NULL
+        AND acc_type = #type#::t_account_type
+        <isNotNull property="startDate">
+            AND acc_registration_date &gt; #startDate#
+        </isNotNull>
+        <isNotNull property="endDate">
+            AND acc_registration_date &lt;= #endDate#
+        </isNotNull>
+    </select>
+</sqlMap>

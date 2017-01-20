@@ -1,0 +1,11 @@
+/* Параметры шкуры */
+body {
+    background: none;
+}
+body.error-404 {
+    background: url("../i/background-404.png") no-repeat top right;
+}
+
+#footer {
+    background: none; 
+}

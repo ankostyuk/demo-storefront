@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ParamSet">
+    <resultMap id="ParamSetDescriptorResultMap" class="ParamSetDescriptor">
+        <result column="psd_id" property="id" />
+        <result column="psd_name" property="name" /> <!-- TODO Deprecated -->
+        <result column="psd_table_name" property="tableName" />
+    </resultMap>
+    
+    <sql id="all-fields">
+        psd_id,
+        psd_name,
+        psd_table_name
+    </sql>
+
+    <!-- Дескриптор набора параметров -->
+    <select id="selectDescriptorById" parameterClass="int" resultMap="ParamSetDescriptorResultMap">
+        SELECT
+            <include refid="all-fields" />
+        FROM param_set_descriptor
+        WHERE psd_id = #id#
+    </select>
+  
+    <insert id="insertDescriptor" parameterClass="ParamSetDescriptor">
+        <selectKey keyProperty="id" resultClass="int">
+            SELECT nextVal('param_set_descriptor_psd_id_seq')
+        </selectKey>
+        INSERT INTO param_set_descriptor (
+            <include refid="all-fields" />
+        ) VALUES (
+            #id#,
+            #name#,
+            #tableName#
+        )
+    </insert>
+    
+    <delete id="deleteDescriptor" parameterClass="int">
+        DELETE FROM param_set_descriptor
+        WHERE psd_id = #id#
+    </delete>
+
+    <!-- Набор параметров -->
+    <!-- TODO: оптимизация
+        подумать как избавиться от remapResults="true" и сбрасывать кеш имен колонок только при изменении набора параметров
+        про remapResults см. iBATIS-SqlMaps-2_en.pdf стр. 26
+    -->
+    <select id="select" parameterClass="java.util.Map" resultClass="java.util.HashMap" remapResults="true">
+        SELECT
+            psx_id AS id,
+            <iterate property="columnNameList" conjunction=",">
+                $columnNameList[]$
+            </iterate>
+        FROM $tableName$
+        WHERE psx_id IN
+        <iterate property="idList" conjunction="," open="(" close=")">
+            #idList[]#
+        </iterate>
+    </select>
+    
+    <insert id="insert" parameterClass="java.util.Map">
+        <selectKey keyProperty="psxId" resultClass="int">
+            SELECT nextVal('$tableName$_psx_id_seq')
+        </selectKey>
+        INSERT INTO $tableName$ (
+            psx_id
+            <iterate prepend="," property="columnList" conjunction=",">
+                $columnList[].name$
+            </iterate>
+        ) VALUES (
+            #psxId#
+            <iterate prepend="," property="columnList" conjunction=",">
+                #columnList[].value#
+            </iterate>
+        )
+    </insert>
+
+    <update id="update" parameterClass="java.util.Map">
+        UPDATE $tableName$ SET
+            <iterate property="columnList" conjunction=",">
+                $columnList[].name$ = #columnList[].value#
+            </iterate>
+        WHERE psx_id = #id#
+    </update>
+    
+    <delete id="delete" parameterClass="java.util.Map">
+        DELETE FROM $tableName$
+        WHERE psx_id = #id#
+    </delete>
+
+</sqlMap>

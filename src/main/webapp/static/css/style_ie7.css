@@ -1,0 +1,215 @@
+.param-tooltip-wrapper {
+    display: inline;
+}
+#param-tooltip .content-box p {
+    background: transparent url("./i/param-tooltip-bg.png") repeat;
+}
+
+input[type="submit"] {
+    padding: 0;
+}
+input[type="submit"].search-submit {
+    vertical-align: baseline;
+}
+
+.match-filter .number input {
+    vertical-align: middle;
+}
+
+.datepicker-input-wrapper {
+    display: inline;
+}
+
+.pseudo-link-wrapper {
+    display: inline;
+}
+.pseudo-link-dropdown {
+    margin-top: -5px;
+}
+.region-inline-dropdown {
+    margin-top: -8px;
+}
+.region-inline-dropdown .tools {
+    vertical-align: top;
+    padding-top: 10px;
+}
+.region-inline-dropdown .region-box {
+    padding-top: 3px;
+}
+
+form .image-field .image-box {
+    margin-top: -20px;
+}
+form div.submit > * {
+    vertical-align: middle;
+}
+
+form.offer select.currency {
+    margin-bottom: 14px;
+}
+form.offer .ratio-box {
+    display: inline;
+    vertical-align: top;
+    margin-top: -1px;
+    min-width: 131px;
+}
+form.offer .ratio-box > * {
+    vertical-align: middle;
+}
+form.offer .actual-box {
+    display: inline;
+    min-width: 540px;
+}
+form.offer .actual-box label.actual {
+    margin-bottom: 6px;
+}
+
+form .region-suggest-box .pager {
+    margin-top: 0.714em;
+}
+
+form.currency .input-box {
+    display: inline;
+    vertical-align: top;
+}
+form.currency .input-box > * {
+    vertical-align: middle;
+}
+form.currency .input-box input.text.inline-number {
+    margin-top: 5px;
+}
+form.currency .input-box span {
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 10px;
+    cursor: default;
+}
+form.currency .error {
+    margin-top: 5px;
+}
+
+.jquery-suggest-list-tools-paging .prev,
+.jquery-suggest-list-tools-paging .next,
+.jquery-suggest-list-tools-close .close {
+    vertical-align: middle;
+}
+
+.comparison-table .data div.cell > div > img {
+    padding-top: 0.357em;
+}
+.comparison-table .scroll-effect.shadow-h > th {
+    background: #e5e5e5 none;
+}
+.comparison-table.shadow-h .scroll-effect.shadow-h > th {
+    background: transparent url(./i/shadow-h.png) left top repeat-x;
+}
+.comparison-table tr.param-values.no-js:hover > td {
+    background: #ffffff url(./i/dot-grid-gray.png) left top repeat;
+}
+#comparison-base tr.param-values.hover > td {
+    background: #ffffff url(./i/dot-grid-gray.png) left top repeat;
+}
+#comparison-base tr.param-values.select > td {
+    background-color: #ffedd6;
+}
+
+.moderation-info .rejected {
+    display: inline;
+}
+
+.contacts-page a.img > img {
+    vertical-align: middle;
+}
+.contacts-page ul.links .code-box {
+    margin-top: -1.2em;
+}
+
+/* IE7 zoom fix
+-----------------------------------------------------------------------------*/
+#searchbar,
+#searchbar .submit-box,
+#searchbar .input-box,
+a.composite.warn.pseudo,
+.jquery-suggest-list.category-suggest span.path-ci-name,
+.search-result-brand .brand-list span,
+.catalog-item-list .catalog-item-sub span,
+.catalog-item-path span,
+.match-path span,
+.price-info a,
+.pager .title,
+.pager .pages > li,
+.sort-box .title,
+.options > span,
+.sort-box .title,
+.h-list-title,
+ul.h-list > li,
+#company-navbar .loginbar li,
+abbr {
+    zoom: 1;
+}
+
+.price-info a,
+abbr {
+    vertical-align: middle;
+    line-height: 1.25;
+}
+
+.search-result-brand .brand-list span {
+    padding-right: 0.357em;
+}
+
+.catalog-item-path span {
+    padding-right: 19px;
+    margin-right: 10px;
+}
+
+.catalog-item-path-plain span {
+    padding-right: 18px;
+    margin-right: 11px;
+}
+
+.match-path span {
+    padding-right: 18px;
+    margin-right: 11px;
+}
+
+.pager {
+    margin-top: -13px;
+}
+.pager .title {
+    margin: 13px 0;
+}
+.pager ul.pages {
+    margin-left: 28px;
+}
+.pager ul.pages li {
+    padding: 13px 19px;
+}
+.pager .nav {
+    margin: -4px 0 0 0;
+}
+
+.sort-box {
+    margin-bottom: 16px;
+}
+.sort-box li {
+    vertical-align: middle;
+}
+
+ul.h-list.items li {
+    vertical-align: middle;
+}
+
+ul.h-list > li {
+    margin-right: 2.423em; /*34*/
+}
+
+#company-navbar .loginbar {
+    padding-top: 0;
+    margin-top: -5px;
+}
+#company-navbar .loginbar li {
+    padding: 20px 0;
+}
+/*-----------------------------------------------------------------------------
+IE7 zoom fix */

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="accountDAO" class="ru.nullpointer.storefront.dao.impl.IBatisAccountDAO">
+        <property name="dataSource" ref="dataSource" />
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+
+    <bean id="companyDAO" class="ru.nullpointer.storefront.dao.impl.IBatisCompanyDAO">
+        <property name="dataSource" ref="dataSource" />
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+
+    <bean id="catalogItemDAO" class="ru.nullpointer.storefront.dao.impl.IBatisCatalogItemDAO">
+        <property name="dataSource" ref="dataSource" />
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+
+    <bean id="categoryDAO" class="ru.nullpointer.storefront.dao.impl.IBatisCategoryDAO">
+        <property name="dataSource" ref="dataSource" />
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+
+    <bean id="offerDAO" class="ru.nullpointer.storefront.dao.impl.IBatisOfferDAO">
+        <property name="dataSource" ref="dataSource" />
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+
+    <bean id="currencyRateDAO" class="ru.nullpointer.storefront.dao.impl.IBatisCurrencyRateDAO">
+        <property name="dataSource" ref="dataSource" />
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+
+    <bean id="extraCurrencyDAO" class="ru.nullpointer.storefront.dao.impl.IBatisExtraCurrencyDAO">
+        <property name="dataSource" ref="dataSource" />
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+
+    <bean id="unitDAO" class="ru.nullpointer.storefront.dao.impl.IBatisUnitDAO">
+        <property name="dataSource" ref="dataSource" />
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+
+    <bean id="regionDAO" class="ru.nullpointer.storefront.dao.impl.IBatisRegionDAO">
+        <property name="dataSource" ref="dataSource" />
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+
+    <bean id="paramSetDAO" class="ru.nullpointer.storefront.dao.impl.IBatisParamSetDAO">
+        <property name="dataSource" ref="dataSource" />
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+
+    <bean id="paramGroupDAO" class="ru.nullpointer.storefront.dao.impl.IBatisParamGroupDAO">
+        <property name="dataSource" ref="dataSource" />
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+
+    <bean id="paramDAO" class="ru.nullpointer.storefront.dao.impl.IBatisParamDAO">
+        <property name="dataSource" ref="dataSource" />
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+
+    <bean id="paramSelectOptionDAO" class="ru.nullpointer.storefront.dao.impl.IBatisParamSelectOptionDAO">
+        <property name="dataSource" ref="dataSource" />
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+
+    <bean id="matchDAO" class="ru.nullpointer.storefront.dao.impl.IBatisMatchDAO">
+        <property name="dataSource" ref="dataSource" />
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+
+    <bean id="modelDAO" class="ru.nullpointer.storefront.dao.impl.IBatisModelDAO">
+        <property name="dataSource" ref="dataSource" />
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+
+    <bean id="brandDAO" class="ru.nullpointer.storefront.dao.impl.IBatisBrandDAO">
+        <property name="dataSource" ref="dataSource" />
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+
+    <bean id="contactDAO" class="ru.nullpointer.storefront.dao.impl.IBatisContactDAO">
+        <property name="dataSource" ref="dataSource" />
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+    
+    <bean id="termDAO" class="ru.nullpointer.storefront.dao.impl.IBatisTermDAO">
+        <property name="dataSource" ref="dataSource" />
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+
+    <bean id="countryDAO" class="ru.nullpointer.storefront.dao.impl.IBatisCountryDAO">
+        <property name="dataSource" ref="dataSource" />
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+
+    <bean id="sessionDescriptorDAO" class="ru.nullpointer.storefront.dao.impl.IBatisSessionDescriptorDAO">
+        <property name="dataSource" ref="dataSource" />
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+
+    <bean id="settingsDAO" class="ru.nullpointer.storefront.dao.impl.IBatisSettingsDAO">
+        <property name="dataSource" ref="dataSource" />
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+
+    <bean id="comparisonListItemDAO" class="ru.nullpointer.storefront.dao.impl.IBatisComparisonListItemDAO">
+        <property name="dataSource" ref="dataSource" />
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+
+    <bean id="cartDAO" class="ru.nullpointer.storefront.dao.impl.IBatisCartDAO">
+        <property name="dataSource" ref="dataSource" />
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+
+    <bean id="cartItemDAO" class="ru.nullpointer.storefront.dao.impl.IBatisCartItemDAO">
+        <property name="dataSource" ref="dataSource" />
+        <property name="sqlMapClient" ref="sqlMapClient" />
+    </bean>
+
+</beans>
+

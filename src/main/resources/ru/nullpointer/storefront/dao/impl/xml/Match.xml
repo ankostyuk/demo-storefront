@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Match">
+    <resultMap id="MatchResultMap" class="Match">
+        <result column="type" property="type" />
+        <result column="id" property="id" />
+    </resultMap>
+
+    <sql id="region-tables">
+        /* begin region tables block */
+        JOIN company ON (off_company_id = com_id)
+        JOIN region AS self_region ON (com_region_id = self_region.reg_id)
+        LEFT JOIN delivery ON (off_delivery AND com_id = del_company_id)
+        LEFT JOIN region AS delivery_region ON (delivery_region.reg_id = del_region_id)
+        /* end region tables block */
+    </sql>
+
+    <sql id="param-value-condition">
+        /* begin param condition block */
+        <iterate property="paramValueList" conjunction="AND">
+            <isEqual property="paramValueList[].param.type" compareValue="BOOLEAN">
+                $paramValueList[].param.columnName$ = #paramValueList[].value#
+            </isEqual>
+            <isEqual property="paramValueList[].param.type" compareValue="NUMBER" open="(" close=")">
+                <isNotNull property="paramValueList[].value.min">
+                    $paramValueList[].param.columnName$ &gt;= #paramValueList[].value.min#
+                </isNotNull>
+                <isNull property="paramValueList[].value.min">
+                    TRUE
+                </isNull>
+                <isNotNull property="paramValueList[].value.max">
+                    AND $paramValueList[].param.columnName$ &lt;= #paramValueList[].value.max#
+                </isNotNull>
+            </isEqual>
+            <isEqual property="paramValueList[].param.type" compareValue="SELECT">
+                <iterate property="paramValueList[].value" open="(" close=")" conjunction="OR">
+                    $paramValueList[].param.columnName$ = #paramValueList[].value[]#
+                </iterate>
+            </isEqual>
+        </iterate>
+        /* end param condition block */
+    </sql>
+
+    <sql id="region-condition">
+        /* begin region condition block */
+        (
+            (self_region.reg_left &gt;= #region.left# AND self_region.reg_right &lt;= #region.right#) OR
+            (self_region.reg_left &lt;  #region.left# AND self_region.reg_right &gt;  #region.right#)
+        )
+        OR
+        (off_delivery = TRUE AND (
+                (delivery_region.reg_left &gt;= #region.left# AND delivery_region.reg_right &lt;= #region.right#) OR
+                (delivery_region.reg_left &lt;  #region.left# AND delivery_region.reg_right &gt;  #region.right#)
+            )
+        )
+        /* end region condition block */
+    </sql>
+
+    <sql id="model-offer-filtered-sql">
+        /* begin model-offer-filtered block */
+        <isNotNull property="region">
+            <include refid="region-tables" />
+        </isNotNull>
+        WHERE off_model_id = #modelId#
+        AND <include refid="Common.offer-accessible-condition" />
+        <isNotNull property="minPrice">
+            AND off_unit_price &gt;= #minPrice#
+        </isNotNull>
+        <isNotNull property="maxPrice">
+            AND off_unit_price &lt;= #maxPrice#
+        </isNotNull>
+        <isNotNull property="region" open="AND (" close=")">
+            <include refid="region-condition" />
+        </isNotNull>
+        /* end model-offer-filtered block */
+    </sql>
+
+    <select id="selectFiltered" parameterClass="java.util.Map" resultMap="MatchResultMap">
+        <!--
+            + categoryId
+            + sorting
+            + offset
+            + limit
+            * filterModels
+            * region
+            * minPrice
+            * maxPrice
+            * paramValueList
+            * paramTableName
+        -->
+        <isNotNull property="filterModels">
+        (
+            <!--
+                TODO: Подумать: можно избавиться от JOIN к таблице model если
+                для предложений с моделью, в поле off_param_set_id, хранить ИД
+                набора парамеров модели.
+                TODO: Подумать: можно избавиться от JOIN к таблице region если
+                для компаний и условий доставки хранить не region_id, а reg_left
+                и reg_right.
+            -->
+            SELECT
+                'MODEL'::character(5) AS type,
+                mod_id AS id,
+                MIN(off_unit_price) AS price
+            FROM model
+            <isNotNull property="paramValueList">
+                /* begin param tables block */
+                JOIN $paramTableName$ ON (mod_param_set_id = psx_id)
+                /* end param tables block */
+            </isNotNull>
+            JOIN offer ON (off_model_id = mod_id)
+            <isNotNull property="region">
+                <include refid="region-tables" />
+            </isNotNull>
+            WHERE off_category_id = #categoryId#
+            AND <include refid="Common.offer-accessible-condition" />
+            <isNotNull property="brandIdList">
+                AND mod_brand_id IN
+                <iterate property="brandIdList" open="(" close=")" conjunction=",">
+                    #brandIdList[]#
+                </iterate>
+            </isNotNull>
+            <isNotNull property="paramValueList" open="AND (" close=")">
+                <include refid="param-value-condition" />
+            </isNotNull>
+            <isNotNull property="region" open="AND (" close=")">
+                <include refid="region-condition" />
+            </isNotNull>
+            GROUP BY mod_id
+            <!--
+                Наибольшая цена за модель - больше минимальной цены
+                Нименьшая цена за модель - меньше максимальной цены
+            -->
+            <isNotNull property="minPrice">
+                HAVING MAX(off_unit_price) &gt;= #minPrice#
+            </isNotNull>
+            <isNotNull property="maxPrice">
+                <isNull property="minPrice">
+                    HAVING
+                </isNull>
+                <isNotNull property="minPrice">
+                    AND
+                </isNotNull>
+                MIN(off_unit_price) &lt;= #maxPrice#
+            </isNotNull>
+        )
+        UNION ALL
+        </isNotNull>
+        (
+            SELECT
+                'OFFER'::character(5) AS type,
+                off_id AS id,
+                off_unit_price AS price
+            FROM offer
+            <isNotNull property="paramValueList">
+                /* begin param block */
+                JOIN $paramTableName$ ON (off_param_set_id = psx_id)
+                /* end param block */
+            </isNotNull>
+            <isNotNull property="region">
+                <include refid="region-tables" />
+            </isNotNull>
+            WHERE off_category_id = #categoryId#
+            AND <include refid="Common.offer-accessible-condition" />
+            <isNotNull property="filterModels">
+                AND off_model_id IS NULL
+            </isNotNull>
+            <isNotNull property="brandIdList">
+                AND off_brand_id IN
+                <iterate property="brandIdList" open="(" close=")" conjunction=",">
+                    #brandIdList[]#
+                </iterate>
+            </isNotNull>
+            <isNotNull property="minPrice">
+                AND off_unit_price &gt;= #minPrice#
+            </isNotNull>
+            <isNotNull property="maxPrice">
+                AND off_unit_price &lt;= #maxPrice#
+            </isNotNull>
+            <isNotNull property="paramValueList" open="AND (" close=")">
+                <include refid="param-value-condition" />
+            </isNotNull>
+            <isNotNull property="region" open="AND (" close=")">
+                <include refid="region-condition" />
+            </isNotNull>
+            GROUP BY off_id, off_unit_price
+        )
+        ORDER BY
+        <dynamic>
+            <isEqual property="sorting" compareValue="PRICE_ASCENDING">
+                price ASC
+            </isEqual>
+            <isEqual property="sorting" compareValue="PRICE_DESCENDING">
+                price DESC
+            </isEqual>
+        </dynamic>
+        OFFSET #offset# LIMIT #limit#
+    </select>
+
+    <select id="countFiltered" parameterClass="java.util.Map" resultClass="int">
+        <!--
+            + categoryId
+            * filterModels
+            * region
+            * minPrice
+            * maxPrice
+            * paramValueList
+            * paramTableName
+        -->
+        SELECT
+        <isNotNull property="filterModels">
+        (
+            SELECT COUNT(*) FROM 
+            (
+                SELECT mod_id
+                FROM model
+                <isNotNull property="paramValueList">
+                    /* begin param tables block */
+                    JOIN $paramTableName$ ON (mod_param_set_id = psx_id)
+                    /* end param tables block */
+                </isNotNull>
+                JOIN offer ON (off_model_id = mod_id)
+                <isNotNull property="region">
+                    <include refid="region-tables" />
+                </isNotNull>
+                WHERE off_category_id = #categoryId#
+                AND <include refid="Common.offer-accessible-condition" />
+                <isNotNull property="brandIdList">
+                    AND mod_brand_id IN
+                    <iterate property="brandIdList" open="(" close=")" conjunction=",">
+                        #brandIdList[]#
+                    </iterate>
+                </isNotNull>
+                <isNotNull property="paramValueList" open="AND (" close=")">
+                    <include refid="param-value-condition" />
+                </isNotNull>
+                <isNotNull property="region" open="AND (" close=")">
+                    <include refid="region-condition" />
+                </isNotNull>
+                GROUP BY mod_id
+                <isNotNull property="minPrice">
+                    HAVING MAX(off_unit_price) &gt;= #minPrice#
+                </isNotNull>
+                <isNotNull property="maxPrice">
+                    <isNull property="minPrice">
+                        HAVING
+                    </isNull>
+                    <isNotNull property="minPrice">
+                        AND
+                    </isNotNull>
+                    MIN(off_unit_price) &lt;= #maxPrice#
+                </isNotNull>
+            ) AS models
+        )
+        +
+        </isNotNull>
+        (
+            SELECT COUNT(DISTINCT off_id)
+            FROM offer
+            <isNotNull property="paramValueList">
+                /* begin param block */
+                JOIN $paramTableName$ ON (off_param_set_id = psx_id)
+                /* end param block */
+            </isNotNull>
+            <isNotNull property="region">
+                <include refid="region-tables" />
+            </isNotNull>
+            WHERE off_category_id = #categoryId#
+            AND <include refid="Common.offer-accessible-condition" />
+            <isNotNull property="filterModels">
+                AND off_model_id IS NULL
+            </isNotNull>
+            <isNotNull property="brandIdList">
+                AND off_brand_id IN
+                <iterate property="brandIdList" open="(" close=")" conjunction=",">
+                    #brandIdList[]#
+                </iterate>
+            </isNotNull>
+            <isNotNull property="minPrice">
+                AND off_unit_price &gt;= #minPrice#
+            </isNotNull>
+            <isNotNull property="maxPrice">
+                AND off_unit_price &lt;= #maxPrice#
+            </isNotNull>
+            <isNotNull property="paramValueList" open="AND (" close=")">
+                <include refid="param-value-condition" />
+            </isNotNull>
+            <isNotNull property="region" open="AND (" close=")">
+                <include refid="region-condition" />
+            </isNotNull>
+        ) AS match_count
+    </select>
+
+    <select id="selectModelInfoMap" parameterClass="java.util.Map" resultClass="ModelInfo">
+        <!--
+            + modelIdList
+            * region
+        -->
+        SELECT
+            mod_id AS modelId,
+            MIN(off_unit_price) AS minPrice,
+            MAX(off_unit_price) AS maxPrice,
+            COUNT(DISTINCT off_id) AS offerCount
+        FROM model
+        JOIN offer ON (off_model_id = mod_id)
+        <isNotNull property="region">
+            <include refid="region-tables" />
+        </isNotNull>
+        WHERE
+        <include refid="Common.offer-accessible-condition" />
+        <isNotNull property="region" open="AND (" close=")">
+            <include refid="region-condition" />
+        </isNotNull>
+        AND mod_id IN
+        <iterate property="modelIdList" open="(" close=")" conjunction=",">
+            #modelIdList[]#
+        </iterate>
+        GROUP BY mod_id
+    </select>
+
+    <select id="selectModelOfferIdFiltered" parameterClass="java.util.Map" resultClass="int" >
+        <!--
+            + modelId
+            + sorting
+            + offset
+            + limit
+            * region
+            * minPrice
+            * maxPrice
+        -->
+        SELECT DISTINCT off_id AS value, off_unit_price
+        FROM offer
+        <include refid="model-offer-filtered-sql" />
+        ORDER BY
+        <dynamic>
+            <isEqual property="sorting" compareValue="PRICE_ASCENDING">
+                off_unit_price ASC
+            </isEqual>
+            <isEqual property="sorting" compareValue="PRICE_DESCENDING">
+                off_unit_price DESC
+            </isEqual>
+        </dynamic>
+        OFFSET #offset# LIMIT #limit#
+    </select>
+
+    <select id="countModelOfferFiltered" parameterClass="java.util.Map" resultClass="int">
+        <!--
+            + modelId
+            * region
+            * minPrice
+            * maxPrice
+        -->
+        SELECT COUNT(DISTINCT off_id)
+        FROM offer
+        <include refid="model-offer-filtered-sql" />
+    </select>
+
+    <select id="selectAccessibleMatches" parameterClass="java.util.Map" resultMap="MatchResultMap">
+        <!--
+            + parametrizedOnly
+            * modelMatchList
+            * offerMatchList
+            * categoryId
+        -->
+        <isNotNull property="modelMatchList">
+            SELECT
+                'MODEL'::character(5) AS type,
+                mod_id AS id
+            FROM model
+            WHERE
+            mod_id IN
+            <iterate property="modelMatchList" open="(" close=")" conjunction=",">
+                #modelMatchList[].id#
+            </iterate>
+            <isNotNull property="categoryId">
+                AND mod_category_id = #categoryId#
+            </isNotNull>
+        </isNotNull>
+        <isNotNull property="offerMatchList">
+            <isNotNull property="modelMatchList">
+                UNION ALL
+            </isNotNull>
+            SELECT
+                'OFFER'::character(5) AS type,
+                off_id AS id
+            FROM offer
+            WHERE
+            <include refid="Common.offer-accessible-condition" />
+            AND off_id IN
+            <iterate property="offerMatchList" open="(" close=")" conjunction=",">
+                #offerMatchList[].id#
+            </iterate>
+            <isNotNull property="categoryId">
+                AND off_category_id = #categoryId#
+            </isNotNull>
+            <isEqual property="parametrizedOnly" compareValue="true">
+                AND (off_param_set_id IS NOT NULL OR off_model_id IS NOT NULL)
+            </isEqual>
+        </isNotNull>
+    </select>
+
+</sqlMap>

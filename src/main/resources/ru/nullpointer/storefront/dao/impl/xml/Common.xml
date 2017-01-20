@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Common">
+
+    <sql id="offer-accessible-condition">
+        (off_active AND off_status = 'APPROVED'::t_offer_status)
+    </sql>
+
+</sqlMap>
